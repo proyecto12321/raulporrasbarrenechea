@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Estudiante · I.E.P. Raúl Porras Barrenechea</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#EDBE33">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='16' fill='%230B2E6B'/><text x='32' y='42' font-size='24' font-weight='700' fill='%23FFD60A' text-anchor='middle' font-family='Arial'>RPB</text></svg>">
+<link rel="stylesheet" href="../assets/css/nucleo.css">
+<link rel="stylesheet" href="../assets/css/panel.css">
+<link rel="stylesheet" href="../assets/css/componentes.css">
+</head>
+<body class="panel">
+
+<!-- El armazón (lateral, barra y lienzo) lo construye UI.armarPanel al
+     comprobar la sesión. Si no hay sesión válida, se redirige al acceso. -->
+<div class="cargando-centro" id="arranque">
+  <div class="rueda"></div>
+  <span>Comprobando tu sesión…</span>
+</div>
+
+<div id="avisos"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../assets/js/nucleo/semilla.js"></script>
+<script src="../assets/js/nucleo/local.js"></script>
+<script src="../assets/js/nucleo/config.js"></script>
+<script src="../assets/js/nucleo/util.js"></script>
+<script src="../assets/js/nucleo/seguridad.js"></script>
+<script src="../assets/js/nucleo/datos.js"></script>
+<script src="../assets/js/nucleo/sesion.js"></script>
+<script src="../assets/js/nucleo/ui.js"></script>
+<script src="../assets/js/nucleo/pdf.js"></script>
+<script src="../assets/js/modulos/academico.js"></script>
+<script src="../assets/js/modulos/comunicacion.js"></script>
+<script src="../assets/js/modulos/direccion.js"></script>
+<script src="../assets/js/modulos/chatbot.js"></script>
+<script src="../assets/js/paneles/base.js"></script>
+<script src="../assets/js/paneles/estudiante.js"></script>
+</body>
+</html>

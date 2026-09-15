@@ -1,0 +1,1300 @@
+/* =====================================================================
+   PORTAL PÚBLICO
+   I.E.P. Raúl Porras Barrenechea
+   Depende de nucleo.css (cárgalo siempre antes que este archivo).
+   ---------------------------------------------------------------------
+   Superficie blanca, tipografía negra, amarillo solo donde hay que mirar.
+   Sin fondos fotográficos: las fotos viven dentro de sus tarjetas.
+   ===================================================================== */
+
+/* ---------------------------------------------------------------------
+   1. FONDO
+   --------------------------------------------------------------------- */
+body.portal{background:var(--lienzo)}
+body.portal::before{
+  content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(46rem 30rem at 88% -8%, var(--oro-tenue), transparent 62%),
+    radial-gradient(38rem 26rem at 4% 4%, rgba(11,11,12,.045), transparent 60%),
+    radial-gradient(34rem 24rem at 50% 112%, rgba(212,175,55,.07), transparent 65%);
+  background-size:180% 180%,180% 180%,180% 180%;
+  animation:malla 22s ease-in-out infinite alternate;
+}
+@keyframes malla{
+  0%{background-position:0% 0%, 100% 0%, 50% 100%}
+  100%{background-position:8% 6%, 92% 8%, 54% 92%}
+}
+@media (prefers-reduced-motion: reduce){ body.portal::before{ animation:none } }
+
+/* Tarjetas con inclinación 3D al paso del mouse (ver U.tiltar3D). El
+   brillo sigue al cursor con las variables --brillo-x/--brillo-y que
+   pone el propio script; sin JS, la tarjeta se queda quieta y se ve
+   exactamente igual, solo sin el movimiento. */
+.tarjeta-3d{
+  will-change:transform;
+  transition:box-shadow var(--normal) var(--fluido);
+  position:relative;
+}
+.tarjeta-3d::before{
+  content:'';position:absolute;inset:0;border-radius:inherit;z-index:2;pointer-events:none;
+  opacity:0;transition:opacity var(--normal);
+  background:radial-gradient(480px circle at var(--brillo-x,50%) var(--brillo-y,50%),
+    rgba(212,175,55,.16), transparent 55%);
+}
+.tarjeta-3d:hover::before{opacity:1}
+.tarjeta-3d:hover{box-shadow:var(--sombra-3), var(--brillo-oro)}
+
+/* ---------------------------------------------------------------------
+   2. BARRA SUPERIOR
+   --------------------------------------------------------------------- */
+.barra-flota{position:sticky;top:0;z-index:600;padding:.7rem 0;transition:padding var(--normal) var(--fluido)}
+.barra-flota.encogida{padding:.4rem 0}
+.barra-flota .cascara{
+  display:flex;align-items:center;gap:1rem;
+  height:60px;padding:0 .6rem 0 .85rem;
+  border-radius:var(--pastilla);
+  background:var(--vidrio-hondo);
+  backdrop-filter:var(--difuso);-webkit-backdrop-filter:var(--difuso);
+  border:1px solid var(--linea);
+  box-shadow:var(--sombra-2);
+  transition:box-shadow var(--normal);
+}
+.barra-flota.encogida .cascara{box-shadow:var(--sombra-3)}
+
+.marca{display:flex;align-items:center;gap:.65rem;flex:0 1 auto;min-width:0;overflow:hidden}
+.marca .txt{min-width:0}
+.marca .txt b{display:block;font-size:.94rem;font-weight:700;letter-spacing:-.022em;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.marca .txt small{display:block;font-size:.69rem;color:var(--tinta-3);line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+.menu{display:flex;align-items:center;gap:.1rem;flex:1;justify-content:flex-end}
+.menu a{
+  display:inline-flex;align-items:center;gap:.35rem;
+  padding:.46rem .78rem;border-radius:var(--pastilla);
+  font-size:.855rem;font-weight:580;color:var(--tinta-2);
+  transition:all var(--rapido) var(--fluido);white-space:nowrap;
+}
+.menu a:hover{background:var(--lienzo-2);color:var(--tinta)}
+.menu a.activo{background:var(--oro-tenue);color:var(--oro-hondo);font-weight:680;box-shadow:inset 0 0 0 1px var(--linea-fuerte)}
+[data-tema="oscuro"] .menu a.activo{background:var(--oro-tenue);color:var(--oro)}
+.menu a .ic{font-size:.9rem;opacity:.8}
+
+.barra-acciones{display:flex;align-items:center;gap:.4rem;flex:0 0 auto;margin-left:auto}
+.btn-tema{
+  width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-size:.95rem;
+  background:var(--lienzo-2);border:1px solid var(--linea);color:var(--tinta-2);
+  transition:transform var(--rapido) var(--resorte),background var(--rapido);
+}
+.btn-tema:hover{transform:scale(1.08);background:var(--linea)}
+.btn-menu{display:none;width:38px;height:38px;border-radius:50%;place-items:center;font-size:1.1rem;
+  background:var(--lienzo-2);border:1px solid var(--linea);color:var(--tinta)}
+
+@media (max-width:1140px){
+  .menu{
+    position:absolute;top:calc(100% + .55rem);left:0;right:0;
+    flex-direction:column;align-items:stretch;gap:.15rem;padding:.6rem;
+    border-radius:var(--r-xl);
+    background:var(--solido);border:1px solid var(--linea);box-shadow:var(--sombra-3);
+    display:none;
+  }
+  .menu.abierto{display:flex;animation:subeHoja .3s var(--resorte)}
+  .menu a{padding:.7rem .9rem}
+  .btn-menu{display:grid}
+}
+@media (max-width:1240px){ .marca .txt small{display:none} }
+@media (max-width:640px){
+  .marca .txt{display:none}
+  .barra-flota .cascara{height:56px;padding:0 .5rem 0 .6rem;gap:.4rem}
+}
+@media (max-width:470px){
+  .barra-acciones .rotulo-ingresar{display:none}
+  .barra-acciones .btn{padding:0 .9rem}
+}
+
+/* ---------------------------------------------------------------------
+   3. PORTADA
+   --------------------------------------------------------------------- */
+.portada{padding:clamp(2rem,5vw,4rem) 0 1rem;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(1.5rem,4vw,3rem);align-items:center}
+@media (max-width:960px){.portada{grid-template-columns:1fr;gap:2rem}}
+
+.insignia{
+  display:inline-flex;align-items:center;gap:.45rem;
+  padding:.36rem .85rem .36rem .5rem;border-radius:var(--pastilla);
+  background:var(--solido);border:1px solid var(--linea-fuerte);
+  font-size:.77rem;font-weight:620;color:var(--tinta-2);
+  box-shadow:var(--sombra-1);margin-bottom:1.3rem;
+}
+.insignia .globo-oro{
+  width:20px;height:20px;border-radius:50%;background:var(--oro);
+  display:grid;place-items:center;font-size:.7rem;color:var(--oro-tinta);
+}
+
+.portada h1{margin-bottom:1.05rem;text-wrap:balance}
+.portada h1 em{font-style:normal;position:relative;white-space:nowrap}
+/* Resaltador: un trazo de plumón, con los bordes algo irregulares y las
+   puntas más claras, en vez de un bloque amarillo de esquina recta. */
+.portada h1 em::after{
+  content:'';position:absolute;left:-.1em;right:-.1em;bottom:.01em;height:.33em;z-index:-1;
+  background:linear-gradient(90deg,
+    rgba(212,175,55,.55), var(--oro) 9%, var(--oro) 91%, rgba(212,175,55,.55));
+  border-radius:.7em .5em .6em .8em / 50%;
+}
+.portada .bajada{color:var(--tinta-2);font-size:1.04rem;line-height:1.65;max-width:46ch;margin-bottom:1.8rem}
+.portada-botones{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center}
+.portada-sello{display:flex;align-items:center;gap:.9rem;margin-bottom:1.4rem}
+
+/* Columna derecha: tarjeta de acceso, en blanco con filo dorado.
+   Antes era un bloque negro; ahora es papel blanco con un halo dorado
+   arriba, que es lo que pediste: blanco y dorado, sin estridencias. */
+.acceso-rapido{
+  background:linear-gradient(170deg, #FFFFFF 0%, var(--solido) 55%, var(--oro-suave) 100%);
+  color:var(--tinta);
+  border:1px solid var(--linea-fuerte);
+  border-radius:var(--r-2xl);padding:1.7rem 1.5rem;
+  box-shadow:var(--sombra-3);
+  display:flex;flex-direction:column;
+  position:relative;overflow:hidden;
+}
+[data-tema="oscuro"] .acceso-rapido{
+  background:linear-gradient(170deg, var(--solido), #121009);
+  border-color:var(--linea-fuerte);
+}
+.acceso-rapido::after{
+  content:'';position:absolute;top:-40%;right:-30%;width:70%;height:110%;
+  background:radial-gradient(circle, rgba(212,175,55,.20), transparent 62%);
+  pointer-events:none;
+}
+.acceso-rapido .cumbre{display:flex;flex-direction:column;align-items:center;text-align:center;margin-bottom:1.3rem;position:relative}
+.acceso-rapido h2{color:var(--tinta);font-size:1.2rem;margin-top:.85rem;letter-spacing:-.026em}
+.acceso-rapido .cumbre p{color:var(--tinta-3);font-size:.83rem;margin-top:.28rem}
+
+.puerta{
+  display:flex;align-items:center;gap:.85rem;width:100%;text-align:left;
+  padding:.9rem 1rem;border-radius:var(--r-lg);margin-bottom:.55rem;
+  background:var(--solido);border:1px solid var(--linea);
+  box-shadow:var(--sombra-1);
+  transition:transform var(--rapido) var(--fluido), background var(--rapido),
+             border-color var(--rapido), box-shadow var(--rapido);
+  position:relative;
+}
+[data-tema="oscuro"] .puerta{background:rgba(255,255,255,.04)}
+.puerta:hover{
+  transform:translateY(-2px);
+  border-color:var(--oro);
+  box-shadow:var(--sombra-2), var(--brillo-oro);
+}
+.puerta:active{transform:scale(.985)}
+.puerta .txt{flex:1;min-width:0}
+.puerta .txt b{display:block;color:var(--tinta);font-size:.95rem;font-weight:660}
+.puerta .txt small{display:block;color:var(--tinta-3);font-size:.78rem;line-height:1.4}
+.puerta .flecha{color:var(--tinta-4);font-size:1.1rem}
+.puerta:hover .flecha{color:var(--oro-hondo)}
+[data-tema="oscuro"] .puerta:hover .flecha{color:var(--oro)}
+
+.lema-firma{
+  margin-top:auto;padding-top:1.3rem;text-align:center;position:relative;
+  font-size:.86rem;color:var(--tinta-3);line-height:1.5;font-style:italic;
+}
+.lema-firma b{display:block;font-style:normal;color:var(--oro-hondo);font-weight:640;margin-top:.2rem}
+[data-tema="oscuro"] .lema-firma b{color:var(--oro)}
+
+/* ---------------------------------------------------------------------
+   4. CONTADORES
+   --------------------------------------------------------------------- */
+.tira-contadores{
+  background:linear-gradient(160deg, #FFFFFF, var(--oro-suave));
+  border:1px solid var(--linea-fuerte);
+  border-radius:var(--r-2xl);
+  padding:clamp(1.3rem,3vw,2.1rem) clamp(1.2rem,3vw,2rem);
+  box-shadow:var(--sombra-2);
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1.2rem;
+  position:relative;overflow:hidden;
+}
+[data-tema="oscuro"] .tira-contadores{background:linear-gradient(160deg, var(--solido), #121009)}
+.tira-contadores::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(40rem 16rem at 50% 140%, rgba(212,175,55,.16), transparent 60%);
+}
+.contador{text-align:center;position:relative;padding:.2rem 0}
+/* El separador es un hilo dorado que se desvanece arriba y abajo, no una
+   raya gris de lado a lado. */
+.contador + .contador{
+  border-left:1px solid transparent;
+  border-image:linear-gradient(180deg, transparent, var(--linea-fuerte) 30%, var(--linea-fuerte) 70%, transparent) 1;
+}
+@media (max-width:700px){ .contador + .contador{border-left:none;border-image:none} }
+.contador .cifra{
+  font-size:clamp(2rem,4.6vw,2.9rem);font-weight:760;line-height:1;
+  color:var(--oro-hondo);letter-spacing:-.04em;font-variant-numeric:tabular-nums;
+  display:block;
+}
+[data-tema="oscuro"] .contador .cifra{color:var(--oro)}
+.contador .rotulo{
+  display:block;margin-top:.45rem;font-size:.79rem;font-weight:600;
+  color:var(--tinta-2);line-height:1.35;
+}
+.contador .detalle{display:block;margin-top:.15rem;font-size:.7rem;color:var(--tinta-3)}
+
+/* ---------------------------------------------------------------------
+   5. SECCIONES
+   --------------------------------------------------------------------- */
+.seccion{position:relative;padding:clamp(2.4rem,6vw,4.2rem) 0;scroll-margin-top:86px}
+
+/* Separación entre secciones: un hilo que nace y muere en el aire, para
+   que marque el corte sin partir la página con una raya de lado a lado. */
+.seccion + .seccion::before{
+  content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:min(1160px, 100% - 2.5rem);height:1px;pointer-events:none;
+  background:linear-gradient(90deg,
+    transparent, var(--linea) 22%, var(--linea-fuerte) 50%, var(--linea) 78%, transparent);
+}
+.seccion-cabeza{margin-bottom:clamp(1.4rem,3vw,2.2rem);max-width:64ch}
+.seccion-cabeza.centrada{margin-inline:auto;text-align:center}
+.ojal{
+  display:inline-flex;align-items:center;gap:.4rem;font-size:.73rem;font-weight:740;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--ambar-h);margin-bottom:.6rem;
+}
+[data-tema="oscuro"] .ojal{color:var(--oro)}
+/* La rayita del antetítulo: nace sólida y se desvanece hacia el texto,
+   en vez de ser un palito plano cortado en seco. */
+.ojal::before{
+  content:'';width:28px;height:3px;border-radius:3px;flex:0 0 auto;
+  background:linear-gradient(90deg, var(--oro-hondo), var(--oro) 58%, rgba(212,175,55,0));
+}
+.seccion-cabeza.centrada .ojal::after, .cabecera-pagina.centrada .ojal::after{
+  content:'';width:28px;height:3px;border-radius:3px;flex:0 0 auto;
+  background:linear-gradient(270deg, var(--oro-hondo), var(--oro) 58%, rgba(212,175,55,0));
+}
+.seccion-cabeza h2{text-wrap:balance}
+.seccion-cabeza p{color:var(--tinta-2);margin-top:.6rem;font-size:.98rem;line-height:1.65}
+
+/* Atajos */
+.atajo{
+  display:flex;flex-direction:column;gap:.65rem;align-items:flex-start;
+  padding:1.2rem;border-radius:var(--r-xl);
+  background:var(--solido);border:1px solid var(--linea);box-shadow:var(--sombra-1);
+  transition:transform var(--normal) var(--fluido), box-shadow var(--normal), border-color var(--rapido);
+}
+.atajo:hover{transform:translateY(-4px);box-shadow:var(--sombra-2);border-color:var(--linea-fuerte)}
+.atajo b{font-size:.96rem;font-weight:660}
+.atajo small{color:var(--tinta-3);font-size:.81rem;line-height:1.5}
+
+/* Tiras informativas */
+.tira{
+  display:flex;align-items:center;gap:.85rem;width:100%;text-align:left;
+  padding:.9rem 1.05rem;border-radius:var(--r-lg);
+  background:var(--solido);border:1px solid var(--linea);box-shadow:var(--sombra-1);
+  transition:transform var(--rapido) var(--fluido), border-color var(--rapido);
+}
+.tira:hover{transform:translateY(-2px);border-color:var(--oro)}
+.tira .txt{flex:1;min-width:0}
+.tira .txt b{display:block;font-size:.9rem;font-weight:640}
+.tira .txt small{color:var(--tinta-3);font-size:.79rem}
+.tira .flecha{color:var(--tinta-4);font-size:1.05rem}
+
+/* ---------------------------------------------------------------------
+   6. HISTORIA — línea de tiempo
+   --------------------------------------------------------------------- */
+.historia{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:clamp(1.5rem,4vw,3rem);align-items:start}
+/* El titular vive dentro de la columna de texto: si queda fuera, la
+   trayectoria empieza más abajo y al lado del título queda un hueco. */
+.historia .seccion-cabeza{max-width:none;margin-bottom:1.1rem}
+@media (max-width:900px){.historia{grid-template-columns:1fr}}
+
+.historia-texto p{color:var(--tinta-2);font-size:.98rem;line-height:1.8;margin-bottom:1.1rem}
+.historia-texto .cita-grande{
+  margin-top:1.5rem;padding:1.2rem 1.35rem;border-radius:var(--r-lg);
+  background:var(--oro-tenue);border-left:3px solid var(--oro);
+  font-size:1.02rem;font-weight:600;line-height:1.6;color:var(--tinta);
+}
+.historia-texto .cita-grande cite{display:block;margin-top:.6rem;font-size:.8rem;font-weight:520;font-style:normal;color:var(--tinta-3)}
+
+/* Línea de tiempo.
+   El riel y los puntos comparten el mismo eje (--carril), así que no hay
+   forma de que queden desalineados. Antes cada punto llevaba un halo del
+   color del lienzo sobre una tarjeta blanca: al no coincidir los dos
+   blancos, la línea se veía cortada a trozos. Ahora el punto es opaco y
+   tapa el riel él solo, y el riel se desvanece arriba y abajo. */
+.hitos{
+  --carril:15px;
+  position:relative;padding-left:2.4rem;
+}
+.hitos::before{
+  content:'';position:absolute;left:calc(var(--carril) - 1.5px);top:11px;bottom:11px;width:3px;
+  border-radius:3px;
+  background:linear-gradient(180deg,
+    rgba(212,175,55,0), var(--oro) 7%, var(--oro-hondo) 72%, rgba(168,131,42,0));
+}
+.hito{position:relative;padding-bottom:1.6rem}
+.hito:last-child{padding-bottom:0}
+.hito::before{
+  content:'';position:absolute;top:4px;left:calc(var(--carril) - 2.4rem - 9px);
+  width:18px;height:18px;border-radius:50%;box-sizing:border-box;z-index:1;
+  background:var(--solido);border:3.5px solid var(--oro);
+  transition:transform var(--normal) var(--resorte);
+}
+/* El último hito es el presente: va relleno. */
+.hito:last-child::before{
+  background:var(--oro);border-color:var(--oro-hondo);
+  box-shadow:0 0 0 5px var(--oro-tenue);
+}
+.hitos:hover .hito::before{transform:scale(1.06)}
+.hito .anio{
+  display:inline-block;font-size:.74rem;font-weight:740;letter-spacing:.05em;
+  color:var(--oro-tinta);background:var(--oro);padding:.16rem .55rem;border-radius:var(--pastilla);
+  margin-bottom:.4rem;
+}
+.hito b{display:block;font-size:.98rem;font-weight:660;margin-bottom:.2rem}
+.hito p{font-size:.87rem;color:var(--tinta-2);line-height:1.6}
+
+/* ---------------------------------------------------------------------
+   7. LUGARES — carrusel 3D giratorio (rueda)
+   ---------------------------------------------------------------------
+   Las tarjetas se reparten por igual alrededor de un cilindro: cada una
+   gira sobre el eje central y se aleja hacia afuera. La rueda entera
+   gira, así que las de atrás se ven de canto y la de adelante, de frente.
+   El radio lo calcula portal.js con trigonometría, para que las tarjetas
+   se toquen justo sin encimarse, sea cual sea el número.
+   --------------------------------------------------------------------- */
+.lugares{position:relative}
+
+.rueda-escena{
+  position:relative;
+  height:clamp(300px,34vw,420px);
+  perspective:1400px;perspective-origin:50% 48%;
+  cursor:grab;touch-action:pan-y;
+  -webkit-user-select:none;user-select:none;
+  overflow:hidden;            /* nada se sale por los costados */
+  display:grid;place-items:center;
+}
+.rueda-escena.arrastrando{cursor:grabbing}
+
+.rueda-3d{
+  position:absolute;inset:0;
+  transform-style:preserve-3d;
+  display:grid;place-items:center;
+}
+
+/* Cada lámina conserva la proporción de la foto (4:3): no se estira ni
+   se recorta de más, que era lo que se veía mal. */
+.lamina{
+  position:absolute;
+  width:min(70%, 460px);
+  aspect-ratio:4/3;
+  border-radius:var(--r-2xl);
+  overflow:hidden;
+  background:linear-gradient(155deg,#FFFDF7,var(--oro-suave));
+  border:1px solid var(--linea-fuerte);
+  box-shadow:0 18px 44px rgba(26,24,20,.16);
+  transition:transform .7s var(--fluido), opacity .6s var(--fluido), box-shadow .5s var(--fluido);
+  backface-visibility:hidden;will-change:transform;
+}
+[data-tema="oscuro"] .lamina{background:linear-gradient(155deg,#241F14,#141109)}
+.lamina.oculta{pointer-events:none}
+.lamina.foco{box-shadow:0 30px 64px rgba(26,24,20,.24), 0 0 0 2px var(--oro);cursor:default}
+.lamina:not(.foco){cursor:pointer;filter:saturate(.88) brightness(.94)}
+.lamina img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+
+/* Pie: solo en la lámina del frente, sobre un degradado suave para que
+   el texto se lea sobre cualquier foto. */
+.lamina figcaption{
+  position:absolute;left:0;right:0;bottom:0;z-index:2;
+  padding:2.6rem 1.15rem .95rem;color:#fff;text-align:left;
+  background:linear-gradient(180deg, transparent, rgba(20,16,8,.82));
+  opacity:0;transform:translateY(10px);
+  transition:opacity .45s var(--fluido), transform .45s var(--fluido);
+}
+.lamina.foco figcaption{opacity:1;transform:none}
+.lamina figcaption b{display:block;font-size:1.05rem;font-weight:700;letter-spacing:-.02em}
+.lamina figcaption small{display:block;font-size:.82rem;color:rgba(255,255,255,.82);margin-top:.15rem;line-height:1.45}
+
+/* El hueco que espera su foto */
+.hueco-foto{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:.45rem;text-align:center;padding:1.2rem;
+  background:
+    repeating-linear-gradient(45deg, rgba(26,24,20,.025) 0 10px, transparent 10px 20px),
+    linear-gradient(155deg,#FFFDF7,#FFF1C9);
+  color:var(--tinta-2);
+}
+[data-tema="oscuro"] .hueco-foto{
+  background:repeating-linear-gradient(45deg, rgba(255,255,255,.02) 0 10px, transparent 10px 20px),
+             linear-gradient(155deg,#282216,#15120B);
+}
+.hueco-foto .ic{font-size:2.5rem;line-height:1;filter:grayscale(.2)}
+.hueco-foto b{color:var(--tinta);font-size:1.05rem;font-weight:660;letter-spacing:-.02em}
+.hueco-foto small{font-size:.72rem;color:var(--tinta-3);max-width:26ch;line-height:1.45}
+
+@media (max-width:720px){
+  .rueda-escena{height:clamp(240px,62vw,320px);perspective:900px}
+  .lamina{width:min(82%, 340px)}
+  .lamina figcaption{padding:2rem .9rem .8rem}
+  .lamina figcaption b{font-size:.95rem}
+}
+@media (prefers-reduced-motion: reduce){
+  .lamina{transition:none}
+}
+
+.lugares-mandos{display:flex;align-items:center;justify-content:center;gap:1rem;margin-top:clamp(1rem,2.4vw,1.6rem)}
+.btn-ico{
+  width:42px;height:42px;border-radius:50%;display:grid;place-items:center;
+  font-size:1.3rem;line-height:1;color:var(--tinta-2);
+  background:var(--solido);border:1px solid var(--linea);box-shadow:var(--sombra-2);
+  transition:transform var(--rapido) var(--resorte), border-color var(--rapido), color var(--rapido);
+}
+.btn-ico:hover{transform:scale(1.09);border-color:var(--oro);color:var(--tinta)}
+.btn-ico:active{transform:scale(.93)}
+.lugares-mandos .puntos{display:flex;gap:.36rem;align-items:center}
+.lugares-mandos .puntos i{
+  width:7px;height:7px;border-radius:50%;background:var(--linea-fuerte);cursor:pointer;
+  transition:all var(--rapido) var(--fluido);
+}
+.lugares-mandos .puntos i.on{background:var(--oro);width:24px;border-radius:980px}
+.pista-arrastre{text-align:center;font-size:.79rem;color:var(--tinta-3);margin-top:.8rem}
+
+@media (max-width:720px){
+  .rueda-escena{height:clamp(228px,58vw,300px)}
+}
+@media (prefers-reduced-motion: reduce){
+  .rueda-3d{transition:none}
+}
+
+/* ---------------------------------------------------------------------
+   7 bis. LAS AULAS — baraja deslizable en 3D
+   ---------------------------------------------------------------------
+   Dónde está cada salón. Las tarjetas se apilan en profundidad y la de
+   adelante se desliza al fondo, como quien pasa fichas de un archivador.
+   --------------------------------------------------------------------- */
+.aulas-escena{
+  position:relative;height:clamp(300px,40vw,372px);
+  perspective:1300px;perspective-origin:50% 45%;
+  -webkit-user-select:none;user-select:none;touch-action:pan-y;cursor:grab;
+  /* Las tarjetas de la pila se van a los costados: se recortan, como en
+     la rueda, para que el móvil no gane barra horizontal. */
+  overflow:hidden;
+}
+.aulas-escena.arrastrando{cursor:grabbing}
+.aulas-pila{position:absolute;inset:0;transform-style:preserve-3d}
+
+.aula-ficha{
+  position:absolute;top:50%;left:50%;
+  width:clamp(250px,32vw,360px);
+  padding:1.5rem 1.4rem;border-radius:var(--r-2xl);
+  background:var(--solido);border:1px solid var(--linea);
+  box-shadow:0 22px 46px rgba(11,11,12,.16);
+  transition:transform .6s var(--fluido), opacity .5s var(--fluido), box-shadow .5s;
+  will-change:transform;
+  display:flex;flex-direction:column;gap:.55rem;
+}
+.aula-ficha.foco{box-shadow:0 30px 62px rgba(11,11,12,.24), 0 0 0 2px var(--oro)}
+[data-tema="oscuro"] .aula-ficha{background:var(--lienzo-2)}
+
+.aula-ficha .nivel{
+  align-self:flex-start;font-size:.7rem;font-weight:740;letter-spacing:.09em;
+  text-transform:uppercase;padding:.24rem .62rem;border-radius:var(--pastilla);
+  background:var(--oro-tenue);color:var(--ambar-h);
+}
+.aula-ficha h3{font-size:1.32rem;letter-spacing:-.028em;line-height:1.15}
+.aula-ficha .donde{
+  display:flex;align-items:center;gap:.45rem;font-size:.87rem;color:var(--tinta-2);
+  padding:.5rem .7rem;border-radius:var(--r-md);background:var(--lienzo-2);
+}
+.aula-ficha .donde b{color:var(--tinta);font-weight:660}
+.aula-ficha .maestra{font-size:.85rem;color:var(--tinta-2)}
+.aula-ficha .maestra b{color:var(--tinta);font-weight:640}
+.aula-ficha .cupos{margin-top:auto;padding-top:.7rem;border-top:1px solid var(--linea)}
+.aula-ficha .cupos .fila-cupo{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.45rem}
+.aula-ficha .cupos .cifra{font-size:1.5rem;font-weight:800;letter-spacing:-.03em;line-height:1}
+.aula-ficha .cupos .cifra.lleno{color:var(--rojo-h)}
+.aula-ficha .cupos small{font-size:.76rem;color:var(--tinta-3)}
+
+.aulas-mandos{display:flex;align-items:center;justify-content:center;gap:1rem;margin-top:.4rem}
+.aulas-mandos .rotulo-aula{font-size:.82rem;color:var(--tinta-3);min-width:9rem;text-align:center;font-variant-numeric:tabular-nums}
+
+@media (max-width:720px){
+  .aulas-escena{height:clamp(292px,72vw,340px)}
+  .aula-ficha{width:min(78vw,320px);padding:1.2rem 1.1rem}
+}
+
+/* ---------------------------------------------------------------------
+   8. EL TRÍPTICO
+   ---------------------------------------------------------------------
+   Dos maneras de leerlo, la misma fuente de contenido:
+
+     .lector     — se hojea, una cara grande a la vez, con vuelta de hoja
+                   real (la hoja gira sobre su lomo y se ve el dorso).
+     .triptico   — se ve entero, desplegado en 3D, como el papel.
+
+   El texto NO es una imagen: son <p> y <ul>, así que se puede
+   seleccionar, buscar, ampliar y leer con lector de pantalla.
+   --------------------------------------------------------------------- */
+.folleto{display:flex;flex-direction:column;align-items:center}
+
+/* --- Selector de modo --- */
+.folleto-modos{
+  display:inline-flex;gap:.2rem;padding:.28rem;margin-bottom:clamp(1rem,2.6vw,1.7rem);
+  border-radius:var(--pastilla);
+  background:var(--lienzo-2);border:1px solid var(--linea);
+}
+.folleto-modos .modo{
+  padding:.48rem 1.05rem;border-radius:var(--pastilla);
+  font-size:.85rem;font-weight:600;color:var(--tinta-2);white-space:nowrap;
+  transition:all var(--rapido) var(--fluido);
+}
+.folleto-modos .modo:hover{color:var(--tinta)}
+.folleto-modos .modo.activo{
+  background:var(--tinta);color:#fff;box-shadow:var(--sombra-1);
+}
+[data-tema="oscuro"] .folleto-modos .modo.activo{background:var(--oro);color:var(--oro-tinta)}
+
+/* =====================================================================
+   8.a  MODO HOJEAR
+   ===================================================================== */
+.lector{
+  display:flex;align-items:center;justify-content:center;gap:clamp(.5rem,2vw,1.6rem);
+  width:100%;
+}
+.lector-escena{
+  position:relative;
+  width:clamp(258px,40vw,412px);
+  aspect-ratio:1 / 1.26;
+  perspective:2100px;perspective-origin:50% 42%;
+  flex:0 0 auto;
+}
+/* Sombra en el suelo: sostiene la hoja para que no flote en el vacío. */
+.lector-escena::after{
+  content:'';position:absolute;left:6%;right:6%;bottom:-22px;height:26px;z-index:-1;
+  background:radial-gradient(closest-side, rgba(11,11,12,.24), transparent 78%);
+  filter:blur(5px);
+}
+
+.hoja{
+  position:absolute;inset:0;
+  transform-origin:left center;transform-style:preserve-3d;
+  transition:transform .7s cubic-bezier(.42,.02,.18,1), opacity .4s var(--fluido);
+  will-change:transform;
+}
+/* Solo se muestran la cara actual, la que ya se pasó (mientras gira) y la
+   que viene debajo. Si estuvieran las seis encima, sus seis sombras se
+   sumarían en un halo gris alrededor del folleto. */
+.hoja.detras{transform:translate(9px,10px) scale(.986)}
+.hoja-cara{
+  position:absolute;inset:0;overflow:hidden;
+  backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  border-radius:4px 12px 12px 4px;
+  background:#FFFFFF;color:#1A1814;
+  border:1px solid rgba(11,11,12,.14);
+  box-shadow:0 7px 18px rgba(11,11,12,.09);
+  display:flex;flex-direction:column;
+  padding:clamp(1rem,2.4vw,1.55rem);
+  /* Red de seguridad: si en alguna pantalla el texto no cupiera, se
+     desplaza dentro de la cara en vez de cortarse a la mitad. */
+  overflow-y:auto;overscroll-behavior:contain;
+  scrollbar-width:thin;
+  text-align:center;
+  font-size:clamp(.78rem,1.07vw,.97rem);line-height:1.62;
+}
+/* En el lector hay sitio de sobra: el contenido respira y llena la cara
+   en vez de amontonarse arriba dejando un hueco abajo. */
+.hoja-cara p{margin-bottom:.72em}
+.hoja-cara ul{gap:.5em}
+.hoja-cara .precios-t{margin:.75em 0 .85em}
+.hoja-cara .precio-t{padding:.32em 0}
+.hoja-cara .bloques-t{gap:.6em;margin:.55em 0 .8em}
+.hoja-cara h4{margin-bottom:.75em;padding-bottom:.42em}
+/* El lomo: un degradado que imita la curva del papel junto al pliegue. */
+.hoja-cara::before{
+  content:'';position:absolute;top:0;bottom:0;left:0;width:16px;pointer-events:none;z-index:3;
+  background:linear-gradient(90deg, rgba(11,11,12,.16), rgba(11,11,12,.03) 55%, transparent);
+}
+.hoja-cara.dorso{
+  transform:rotateY(180deg);
+  border-radius:12px 4px 4px 12px;
+  justify-content:center;
+  background:
+    repeating-linear-gradient(45deg, rgba(11,11,12,.05) 0 1px, transparent 1px 8px),
+    linear-gradient(160deg, #EFEDE5, #F7F5EF 48%, #E9E7DE);
+}
+.hoja-cara.dorso::before{left:auto;right:0;
+  background:linear-gradient(270deg, rgba(11,11,12,.16), rgba(11,11,12,.03) 55%, transparent)}
+/* El rótulo se des-espeja: la hoja está del revés, pero el sello impreso
+   en el dorso del papel no tiene por qué leerse al revés. */
+.hoja-cara.dorso .marca-agua{
+  margin:auto;text-align:center;transform:scaleX(-1);
+  color:rgba(11,11,12,.22);
+  font-size:1.6rem;font-weight:800;letter-spacing:.3em;text-transform:uppercase;
+  line-height:1.9;
+}
+.hoja-cara.dorso .marca-agua small{display:block;font-size:.42em;letter-spacing:.22em;font-weight:700}
+
+.hoja.activa .hoja-cara{box-shadow:0 24px 52px rgba(11,11,12,.21), 0 3px 9px rgba(11,11,12,.11)}
+
+/* La hoja que se pasa gira sobre su lomo y, ya de canto, se desvanece.
+   Se probó dejarla caída a la izquierda mostrando su dorso, pero el
+   navegador la compone como una lámina en blanco que no aporta nada y
+   estorba a la que se está leyendo. Así el gesto se ve y no queda basura
+   en pantalla. */
+.hoja.pasada{
+  transform:rotateY(-172deg);
+  opacity:0;
+  transition:transform .68s cubic-bezier(.42,.02,.18,1), opacity .3s linear .38s;
+}
+.hoja.oculta{opacity:0;pointer-events:none;transition:opacity .2s}
+.hoja .hoja-cara.dorso{opacity:0}
+
+/* Flechas del lector */
+.hoja-flecha{
+  position:relative;z-index:6;
+  width:46px;height:46px;flex:0 0 auto;border-radius:50%;display:grid;place-items:center;
+  font-size:1.45rem;line-height:1;color:var(--tinta-2);
+  background:var(--solido);border:1px solid var(--linea);box-shadow:var(--sombra-2);
+  transition:transform var(--rapido) var(--resorte), border-color var(--rapido), opacity var(--rapido);
+}
+.hoja-flecha:hover{transform:scale(1.09);border-color:var(--oro);color:var(--tinta)}
+.hoja-flecha:active{transform:scale(.93)}
+.hoja-flecha[disabled]{opacity:.3;pointer-events:none}
+
+.lector-pie{
+  display:flex;align-items:center;justify-content:center;gap:1rem;
+  margin-top:clamp(1.6rem,3vw,2.2rem);
+}
+.lector-pie .puntos{display:flex;gap:.36rem}
+.lector-pie .puntos i{
+  width:7px;height:7px;border-radius:50%;background:var(--linea-fuerte);cursor:pointer;
+  transition:all var(--rapido) var(--fluido);
+}
+.lector-pie .puntos i.on{background:var(--oro);width:24px;border-radius:980px}
+.lector-num{font-size:.8rem;color:var(--tinta-3);font-variant-numeric:tabular-nums}
+
+/* =====================================================================
+   8.b  MODO DESPLEGADO (el folleto entero, en 3D)
+   ===================================================================== */
+.triptico-escena{
+  perspective:2400px;perspective-origin:50% 44%;
+  display:grid;place-items:center;
+  padding:clamp(1rem,3vw,2rem) 0 clamp(1.6rem,3vw,2.4rem);
+  min-height:clamp(400px,52vw,620px);
+  width:100%;
+  cursor:grab;-webkit-user-select:none;user-select:none;touch-action:pan-y;
+}
+.triptico-escena.arrastrando{cursor:grabbing}
+
+.triptico{
+  --panel:clamp(168px,22.5vw,286px);
+  position:relative;transform-style:preserve-3d;
+  width:calc(var(--panel) * 3);
+  transition:transform var(--lento) var(--fluido);
+  will-change:transform;
+}
+/* Sombra propia en el suelo: sin ella el folleto parece pegado al fondo. */
+.triptico::after{
+  content:'';position:absolute;left:2%;right:2%;bottom:-34px;height:34px;
+  transform:translateZ(-60px);
+  background:radial-gradient(closest-side, rgba(11,11,12,.3), transparent 76%);
+  filter:blur(7px);pointer-events:none;
+}
+
+.lado{display:flex;transform-style:preserve-3d}
+.lado.int{position:absolute;inset:0;transform:rotateY(180deg);flex-direction:row-reverse}
+
+.triptico-cara{
+  flex:0 0 var(--panel);width:var(--panel);
+  aspect-ratio:224 / 420;
+  color:#1A1814;
+  border:1px solid rgba(11,11,12,.13);
+  padding:clamp(.6rem,1.4vw,1.05rem);
+  overflow:hidden;
+  backface-visibility:hidden;
+  transform-style:preserve-3d;
+  transition:transform var(--lento) var(--fluido), box-shadow var(--normal);
+  display:flex;flex-direction:column;
+  font-size:clamp(.5rem,.85vw,.72rem);line-height:1.5;
+  text-align:center;position:relative;
+  /* Papel: el blanco no es plano, se aclara hacia el centro del panel. */
+  background:linear-gradient(100deg, #F4F4F2 0%, #FFFFFF 22%, #FFFFFF 78%, #F2F2F0 100%);
+}
+
+/* Los lomos: el panel izquierdo y el derecho giran sobre su pliegue */
+.lado .triptico-cara:first-child{
+  transform-origin:right center;
+  border-radius:5px 0 0 5px;
+  box-shadow:-16px 18px 38px rgba(11,11,12,.2);
+}
+.lado .triptico-cara:nth-child(2){
+  box-shadow:0 20px 46px rgba(11,11,12,.22);
+}
+.lado .triptico-cara:last-child{
+  transform-origin:left center;
+  border-radius:0 5px 5px 0;
+  box-shadow:16px 18px 38px rgba(11,11,12,.2);
+}
+
+/* Sombra del pliegue, en el borde que toca al panel central */
+.triptico-cara::before{
+  content:'';position:absolute;top:0;bottom:0;width:11px;pointer-events:none;z-index:2;
+}
+.lado .triptico-cara:first-child::before{right:0;background:linear-gradient(270deg, rgba(11,11,12,.17), transparent)}
+.lado .triptico-cara:last-child::before{left:0;background:linear-gradient(90deg, rgba(11,11,12,.17), transparent)}
+
+/* La cara interior va en espejo (row-reverse): el pliegue de cada ala
+   queda del lado opuesto. Sin invertir el origen, el ala se dobla por el
+   borde libre y asoma como una astilla al costado del folleto. */
+.lado.int .triptico-cara:first-child{
+  transform-origin:left center;
+  border-radius:0 5px 5px 0;
+  box-shadow:16px 18px 38px rgba(11,11,12,.2);
+}
+.lado.int .triptico-cara:last-child{
+  transform-origin:right center;
+  border-radius:5px 0 0 5px;
+  box-shadow:-16px 18px 38px rgba(11,11,12,.2);
+}
+.lado.int .triptico-cara:first-child::before{right:auto;left:0;background:linear-gradient(90deg, rgba(11,11,12,.17), transparent)}
+.lado.int .triptico-cara:last-child::before{left:auto;right:0;background:linear-gradient(270deg, rgba(11,11,12,.17), transparent)}
+
+/* Abierto: el papel nunca queda perfectamente plano, así que las alas
+   conservan unos grados. Eso es lo que hace que parezca papel. */
+.triptico .lado .triptico-cara:first-child{transform:rotateY(7deg)}
+.triptico .lado .triptico-cara:last-child{transform:rotateY(-7deg)}
+
+/* Cerrado: las alas se doblan hacia el lector */
+.triptico.cerrado .lado .triptico-cara:first-child{transform:rotateY(87deg)}
+.triptico.cerrado .lado .triptico-cara:last-child{transform:rotateY(-87deg)}
+
+/* Con el folleto cerrado las alas de una cara quedan pegadas a las de la
+   otra: el papel es opaco, así que solo se ve el lado que mira al lector. */
+.lado{transition:opacity var(--normal) var(--fluido)}
+.triptico.cerrado .lado.int{opacity:0}
+.triptico.cerrado.mostrando-interior .lado.int{opacity:1}
+.triptico.cerrado.mostrando-interior .lado.ext{opacity:0}
+
+/* Volteado: se ve el interior */
+.triptico.mostrando-interior{transform:rotateY(180deg)}
+
+/* =====================================================================
+   8.c  CONTENIDO DE LAS CARAS  (sirve a los dos modos)
+   ---------------------------------------------------------------------
+   Todo va en "em", de modo que el mismo marcado se ve diminuto dentro del
+   folleto desplegado y cómodo de leer en el lector, sin duplicar nada.
+   ===================================================================== */
+.hoja-cara > *, .triptico-cara > *{flex:0 0 auto}
+
+.hoja-cara h4, .triptico-cara h4{
+  font-size:1.2em;font-weight:800;letter-spacing:-.01em;text-transform:uppercase;
+  margin-bottom:.6em;padding-bottom:.34em;border-bottom:1.5px solid var(--oro-hondo);
+}
+.hoja-cara .sello-t, .triptico-cara .sello-t{
+  width:34%;aspect-ratio:1/1.12;margin:0 auto .5em;
+  background:linear-gradient(170deg,#FFFDF7,var(--oro-suave));
+  border:1.2px solid var(--oro);border-radius:4px 4px 12px 12px / 4px 4px 18px 18px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  /* Las siglas van en el rojo del escudo real del colegio, no en
+     blanco: el fondo de este sello es crema, así que en blanco las
+     letras desaparecían. Es el mismo rojo del papel membretado. */
+  color:#B0332A;font-weight:800;font-size:1.05em;letter-spacing:.04em;
+}
+.hoja-cara .sello-t i, .triptico-cara .sello-t i{
+  font-style:normal;font-size:.48em;color:#8E6B10;letter-spacing:.09em;margin-bottom:.15em}
+.hoja-cara .nombre-t, .triptico-cara .nombre-t{font-weight:800;font-size:1.06em;line-height:1.22;margin-bottom:.14em}
+.hoja-cara .nivel-t, .triptico-cara .nivel-t{font-size:.82em;letter-spacing:.15em;text-transform:uppercase;color:#4A4A4F;margin-bottom:.6em}
+.hoja-cara .franja-t, .triptico-cara .franja-t{
+  background:#D4AF37;color:#2A2103;font-weight:800;text-transform:uppercase;
+  letter-spacing:.02em;padding:.32em .5em;border-radius:3px;margin-bottom:.35em;font-size:.98em;
+}
+.hoja-cara .anio-t, .triptico-cara .anio-t{font-size:2.5em;font-weight:820;line-height:1;letter-spacing:-.04em;margin-bottom:.5em}
+
+.hoja-cara ul, .triptico-cara ul{list-style:none;text-align:left;display:grid;gap:.36em}
+.hoja-cara ul li, .triptico-cara ul li{position:relative;padding-left:.85em;font-size:.97em;line-height:1.45}
+.hoja-cara ul li::before, .triptico-cara ul li::before{
+  content:'';position:absolute;left:0;top:.48em;width:.3em;height:.3em;border-radius:50%;background:var(--oro-hondo)}
+
+/* Los bloques amarillos se estiran para repartir el aire sobrante: así el
+   panel no queda con el contenido arriba y un hueco vacío abajo. */
+.hoja-cara .bloque-amarillo, .triptico-cara .bloque-amarillo{
+  background:#D4AF37;border-radius:5px;padding:.6em .65em;margin-top:auto;text-align:left;
+}
+.hoja-cara .bloque-amarillo .rot, .triptico-cara .bloque-amarillo .rot{
+  display:block;font-weight:800;text-transform:uppercase;text-decoration:underline;
+  margin-bottom:.35em;font-size:.98em;
+}
+.hoja-cara .bloque-amarillo li::before, .triptico-cara .bloque-amarillo li::before{background:#2A2103}
+
+.hoja-cara p, .triptico-cara p{text-align:justify;font-size:.97em;line-height:1.55;margin-bottom:.55em}
+.hoja-cara .cita-t, .triptico-cara .cita-t{
+  background:#D4AF37;padding:.5em .55em;border-radius:4px;font-weight:700;
+  font-size:.95em;line-height:1.4;margin-top:auto;
+}
+.hoja-cara .precios-t, .triptico-cara .precios-t{margin:.5em 0 .6em}
+.hoja-cara .precio-t, .triptico-cara .precio-t{
+  display:flex;justify-content:space-between;gap:.4em;font-size:.97em;padding:.2em 0;
+  border-bottom:1px dotted rgba(11,11,12,.3)}
+.hoja-cara .precio-t b, .triptico-cara .precio-t b{font-weight:800}
+.hoja-cara .bloques-t, .triptico-cara .bloques-t{display:grid;gap:.45em;margin:.35em 0 .6em}
+.hoja-cara .bloques-t > div, .triptico-cara .bloques-t > div{
+  border:1px solid rgba(11,11,12,.2);border-radius:5px;padding:.45em}
+.hoja-cara .bloques-t .rot, .triptico-cara .bloques-t .rot{
+  display:block;font-size:.82em;text-transform:uppercase;letter-spacing:.07em;color:#4A4A4F;font-weight:700}
+.hoja-cara .bloques-t b, .triptico-cara .bloques-t b{font-size:1.05em;font-weight:800}
+.hoja-cara .contacto-t, .triptico-cara .contacto-t{
+  margin-top:auto;text-align:left;font-size:.97em;display:grid;gap:.2em;
+  padding-top:.5em;border-top:1.3px solid #1A1814}
+.hoja-cara .contacto-t b, .triptico-cara .contacto-t b{font-weight:800}
+.hoja-cara .lema-t, .triptico-cara .lema-t{
+  font-size:.93em;font-weight:800;color:#C1121F;text-transform:uppercase;
+  letter-spacing:.01em;line-height:1.25;margin-bottom:.45em;
+}
+.hoja-cara .intro-t, .triptico-cara .intro-t{font-size:.97em;text-align:left;margin-bottom:.5em;font-weight:600}
+
+/* En el LECTOR hay sitio de sobra. El "margin-top:auto" de arriba sirve
+   para el folleto desplegado (empuja el bloque final al pie del panel),
+   pero en la cara grande acumula todo el aire en un solo hueco. Aquí se
+   anula y el espacio se reparte entre todos los bloques. */
+.hoja-cara{justify-content:space-between}
+.hoja-cara .cita-t,
+.hoja-cara .bloque-amarillo,
+.hoja-cara .contacto-t{margin-top:0}
+
+/* --- Mandos y pie --- */
+.triptico-mandos{display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap;margin-top:.4rem}
+.triptico-pista{text-align:center;font-size:.82rem;color:var(--tinta-3);margin-top:1.1rem;line-height:1.6}
+@media (hover:none){ .triptico-pista .solo-raton{display:none} }
+
+@media (max-width:720px){
+  /* En el móvil no hay ancho para poner las flechas al costado de la
+     hoja: se montan encima, sobre los bordes, como en cualquier galería
+     de teléfono. Si se dejaran al lado, la fila entera se saldría de la
+     pantalla y aparecería la barra horizontal. */
+  .lector{position:relative;gap:0}
+  .lector-escena{width:min(80vw,340px);aspect-ratio:1 / 1.52}
+  .hoja-cara{font-size:clamp(.66rem,2.85vw,.84rem);padding:.85rem}
+  .hoja-flecha{
+    position:absolute;top:50%;z-index:8;
+    width:38px;height:38px;font-size:1.15rem;
+    transform:translateY(-50%);
+    background:rgba(255,255,255,.92);
+    backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  }
+  .hoja-flecha:first-of-type{left:0}
+  .hoja-flecha:last-of-type{right:0}
+  .hoja-flecha:hover{transform:translateY(-50%)}
+  .hoja-flecha:active{transform:translateY(-50%) scale(.93)}
+  [data-tema="oscuro"] .hoja-flecha{background:rgba(28,28,30,.9)}
+  .triptico{--panel:min(29vw,132px)}
+  .triptico-cara{padding:.42rem}
+}
+@media (prefers-reduced-motion: reduce){
+  .hoja{transition:opacity .2s}
+  .hoja.pasada{transform:none}
+}
+
+/* ---------------------------------------------------------------------
+   9. VENTAJAS (bloque del tríptico convertido en tarjetas)
+   --------------------------------------------------------------------- */
+.ventaja{
+  display:flex;gap:.9rem;padding:1.1rem;border-radius:var(--r-lg);
+  background:var(--solido);border:1px solid var(--linea);
+  transition:border-color var(--rapido), transform var(--rapido) var(--fluido);
+}
+.ventaja:hover{border-color:var(--oro);transform:translateY(-2px)}
+.ventaja .em{font-size:1.5rem;flex:0 0 auto;line-height:1}
+.ventaja b{display:block;font-size:.93rem;font-weight:660;margin-bottom:.15rem}
+.ventaja small{color:var(--tinta-3);font-size:.81rem;line-height:1.5}
+
+/* ---------------------------------------------------------------------
+   10. GRADOS
+   --------------------------------------------------------------------- */
+.grado{
+  display:flex;flex-direction:column;gap:.7rem;
+  padding:1.15rem;border-radius:var(--r-xl);
+  background:var(--solido);border:1px solid var(--linea);box-shadow:var(--sombra-1);
+  transition:transform var(--normal) var(--fluido), box-shadow var(--normal);
+}
+.grado:hover{transform:translateY(-4px);box-shadow:var(--sombra-2)}
+.grado .top{display:flex;align-items:center;gap:.7rem}
+.grado .top > div{min-width:0}
+/* El nombre del aula va debajo del grado, no pegado a su derecha. */
+.grado .top b{display:block;line-height:1.25}
+.grado .top small{display:block;margin-top:.1rem;line-height:1.35}
+.grado b{font-size:.98rem;font-weight:660}
+.grado small{color:var(--tinta-3);font-size:.79rem}
+.grado .pie{display:flex;align-items:center;justify-content:space-between;gap:.6rem;margin-top:.1rem}
+
+/* ---------------------------------------------------------------------
+   11. COMUNICADOS
+   --------------------------------------------------------------------- */
+.comunicado{
+  padding:1.1rem 1.25rem;border-radius:var(--r-xl);
+  background:var(--solido);border:1px solid var(--linea);
+  border-left:3px solid var(--oro);box-shadow:var(--sombra-1);
+  transition:transform var(--rapido) var(--fluido), box-shadow var(--rapido);
+}
+.comunicado:hover{transform:translateX(3px);box-shadow:var(--sombra-2)}
+.comunicado.urgente{border-left-color:var(--rojo)}
+.comunicado h4{font-size:.98rem;margin-bottom:.4rem;font-weight:660}
+.comunicado p{color:var(--tinta-2);font-size:.88rem;line-height:1.6}
+.comunicado .meta{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;margin-top:.7rem;font-size:.74rem;color:var(--tinta-3)}
+
+/* ---------------------------------------------------------------------
+   12. REQUISITOS Y MATRÍCULA
+   --------------------------------------------------------------------- */
+.requisito{
+  display:flex;align-items:flex-start;gap:.65rem;padding:.62rem 0;
+  border-bottom:1px solid var(--linea);color:var(--tinta-2);font-size:.88rem;line-height:1.55;
+}
+.requisito:last-child{border-bottom:none}
+.requisito .tic{
+  flex:0 0 18px;width:18px;height:18px;border-radius:50%;margin-top:.12rem;
+  background:var(--oro);color:var(--oro-tinta);display:grid;place-items:center;
+  font-size:.66rem;font-weight:800;
+}
+
+.caja-precios{display:grid;gap:.5rem;margin-top:1.1rem}
+.caja-precios > div{
+  display:flex;justify-content:space-between;align-items:baseline;gap:1rem;
+  padding:.7rem .95rem;border-radius:var(--r-md);background:var(--lienzo);
+  border:1px solid var(--linea);font-size:.88rem;
+}
+.caja-precios > div b{font-size:1.02rem;font-weight:720;font-variant-numeric:tabular-nums}
+.caja-precios > div.destacada{background:var(--oro);border-color:transparent;color:var(--oro-tinta)}
+
+/* ---------------------------------------------------------------------
+   13. PIE
+   --------------------------------------------------------------------- */
+.pie{margin-top:2rem;padding:clamp(2rem,5vw,3rem) 0 1.4rem;border-top:1px solid var(--linea)}
+.pie .cols{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.2fr;gap:2rem;margin-bottom:2rem}
+@media (max-width:800px){.pie .cols{grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:1.6rem}}
+.pie h5{font-size:.8rem;font-weight:720;margin-bottom:.75rem;letter-spacing:.04em;text-transform:uppercase;color:var(--tinta-3)}
+.pie li,.pie p{color:var(--tinta-2);font-size:.85rem;line-height:1.9;list-style:none}
+.pie a:hover{color:var(--ambar-h)}
+.pie .abajo{
+  display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;
+  padding-top:1.3rem;border-top:1px solid var(--linea);color:var(--tinta-3);font-size:.79rem;
+}
+.pie .hashtag{font-weight:700;color:var(--ambar-h);letter-spacing:-.01em}
+[data-tema="oscuro"] .pie .hashtag{color:var(--oro)}
+
+/* ---------------------------------------------------------------------
+   14. ASISTENTE VIRTUAL — sección propia del portal
+   --------------------------------------------------------------------- */
+.asistente{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,420px);gap:clamp(1.5rem,4vw,3rem);align-items:center}
+@media (max-width:900px){.asistente{grid-template-columns:1fr}}
+
+.asistente-puntos{display:grid;gap:.75rem;margin-top:1.4rem}
+.asistente-puntos > div{display:flex;gap:.7rem;align-items:flex-start;font-size:.9rem;color:var(--tinta-2);line-height:1.55}
+.asistente-puntos .tic{
+  flex:0 0 20px;width:20px;height:20px;border-radius:50%;margin-top:.08rem;
+  background:linear-gradient(160deg,var(--oro-claro),var(--oro));color:var(--oro-tinta);
+  display:grid;place-items:center;font-size:.66rem;font-weight:800;
+}
+[data-tema="oscuro"] .asistente-puntos .tic{background:var(--oro);color:var(--oro-tinta)}
+
+/* Marco tipo teléfono para el chat empotrado */
+.marco-movil{
+  width:100%;max-width:400px;margin-inline:auto;
+  background:linear-gradient(170deg,var(--grafito),#141109);border-radius:40px;padding:11px;
+  box-shadow:var(--sombra-3);position:relative;
+}
+[data-tema="oscuro"] .marco-movil{background:linear-gradient(170deg,#26221A,#0A0906);border:1px solid var(--linea-fuerte)}
+.marco-movil::before{
+  content:'';position:absolute;top:20px;left:50%;transform:translateX(-50%);
+  width:74px;height:5px;border-radius:980px;background:rgba(255,255,255,.22);z-index:3;
+}
+.marco-movil .pantalla{
+  background:var(--lienzo);border-radius:30px;overflow:hidden;
+  height:min(560px,74vh);display:flex;flex-direction:column;
+}
+
+/* ---------------------------------------------------------------------
+   15. CHATBOT (burbuja flotante y ventana; también empotrado)
+   --------------------------------------------------------------------- */
+.chat-burbuja{
+  position:fixed;right:1.2rem;bottom:1.2rem;z-index:700;
+  width:56px;height:56px;border-radius:50%;display:grid;place-items:center;font-size:1.4rem;
+  background:var(--oro);color:var(--oro-tinta);
+  box-shadow:0 8px 26px rgba(212,175,55,.45), var(--sombra-2);
+  transition:transform var(--normal) var(--resorte);
+}
+.chat-burbuja:hover{transform:scale(1.09) rotate(-5deg)}
+.chat-burbuja .globo{
+  position:absolute;top:-2px;right:-2px;min-width:18px;height:18px;border-radius:980px;padding:0 5px;
+  background:var(--tinta);color:#fff;font-size:.66rem;font-weight:760;display:grid;place-items:center;
+  border:2px solid var(--lienzo);
+}
+[data-tema="oscuro"] .chat-burbuja .globo{background:#fff;color:#000}
+
+.chat-ventana{
+  position:fixed;right:1.2rem;bottom:5.2rem;z-index:701;
+  width:min(382px,calc(100vw - 2.4rem));height:min(560px,calc(100vh - 8rem));
+  border-radius:var(--r-2xl);overflow:hidden;display:none;flex-direction:column;
+  background:var(--lienzo);border:1px solid var(--linea);box-shadow:var(--sombra-3);
+}
+.chat-ventana.abierta{display:flex;animation:subeHoja .4s var(--resorte)}
+
+/* El mismo chat, empotrado en el marco de teléfono */
+.chat-empotrado{display:flex;flex-direction:column;height:100%;background:var(--lienzo)}
+
+.chat-cabeza{
+  display:flex;align-items:center;gap:.65rem;padding:.85rem 1rem;flex:0 0 auto;
+  background:linear-gradient(160deg,var(--oro-claro),var(--oro));color:var(--oro-tinta);
+}
+[data-tema="oscuro"] .chat-cabeza{background:linear-gradient(160deg,var(--oro-hondo),#8A6A1E);color:#FFF8E4;border-bottom:1px solid var(--linea)}
+.chat-cabeza b{font-size:.92rem;display:block;font-weight:660}
+.chat-cabeza small{font-size:.73rem;opacity:.7;display:flex;align-items:center;gap:.3rem}
+
+.chat-cuerpo{flex:1;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:.55rem}
+.globo-chat{
+  max-width:86%;padding:.66rem .9rem;border-radius:var(--r-lg);
+  font-size:.875rem;line-height:1.55;box-shadow:var(--sombra-1);word-break:break-word;
+  animation:entraGlobo .3s var(--resorte);
+}
+@keyframes entraGlobo{from{opacity:0;transform:translateY(6px) scale(.97)}to{opacity:1;transform:none}}
+.globo-chat.bot{background:var(--solido);border:1px solid var(--linea);border-bottom-left-radius:6px;align-self:flex-start}
+.globo-chat.yo{background:var(--oro);color:var(--oro-tinta);border-bottom-right-radius:6px;align-self:flex-end;font-weight:520}
+.globo-chat b{font-weight:720}
+.globo-chat ul{margin:.35rem 0 0;padding-left:1.05rem}
+.globo-chat li{margin-bottom:.15rem}
+.globo-chat .fichas{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.5rem}
+.globo-chat .fichas span{
+  font-size:.74rem;font-weight:620;padding:.2rem .55rem;border-radius:var(--pastilla);
+  background:var(--oro-tenue);color:var(--ambar-h);border:1px solid rgba(212,175,55,.34);
+}
+
+.chat-sugerencias{display:flex;gap:.35rem;flex-wrap:wrap;padding:.1rem 1rem .7rem}
+.chat-sugerencias button{
+  padding:.36rem .75rem;border-radius:var(--pastilla);font-size:.775rem;font-weight:580;
+  background:var(--solido);border:1px solid var(--linea-fuerte);color:var(--tinta-2);
+  transition:all var(--rapido);
+}
+.chat-sugerencias button:hover{background:var(--oro);color:var(--oro-tinta);border-color:transparent}
+[data-tema="oscuro"] .chat-sugerencias button:hover{background:var(--oro);color:var(--oro-tinta)}
+
+.chat-pie{display:flex;gap:.45rem;padding:.7rem;border-top:1px solid var(--linea);background:var(--solido);flex:0 0 auto}
+.chat-pie input{flex:1;height:42px;border-radius:var(--pastilla);border:1px solid var(--linea-fuerte);background:var(--lienzo);padding:0 1rem;outline:none;font-size:.89rem;min-width:0}
+.chat-pie input:focus{border-color:var(--oro);box-shadow:0 0 0 3px var(--oro-tenue)}
+.chat-pie button{width:42px;height:42px;border-radius:50%;flex:0 0 42px;display:grid;place-items:center;
+  background:var(--oro);color:var(--oro-tinta);font-size:.95rem;transition:transform var(--rapido) var(--resorte)}
+.chat-pie button:hover{transform:scale(1.07)}
+
+.escribiendo{display:flex;gap:4px;padding:.75rem 1rem;align-self:flex-start;
+  background:var(--solido);border:1px solid var(--linea);border-radius:var(--r-lg);border-bottom-left-radius:6px}
+.escribiendo i{width:6px;height:6px;border-radius:50%;background:var(--tinta-3);animation:salta 1.3s infinite}
+.escribiendo i:nth-child(2){animation-delay:.18s}
+.escribiendo i:nth-child(3){animation-delay:.36s}
+@keyframes salta{0%,60%,100%{transform:translateY(0);opacity:.35}30%{transform:translateY(-5px);opacity:1}}
+
+/* ---------------------------------------------------------------------
+   16. PANTALLAS DE ACCESO (tres páginas separadas)
+   --------------------------------------------------------------------- */
+body.acceso{background:var(--lienzo);min-height:100vh}
+body.acceso::before{
+  content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(44rem 28rem at 86% -6%, var(--oro-tenue), transparent 60%),
+    radial-gradient(36rem 24rem at 6% 100%, rgba(11,11,12,.05), transparent 58%);
+}
+.escena-acceso{min-height:100vh;display:flex;flex-direction:column;padding:1.1rem 0 2rem}
+.acceso-centro{flex:1;display:flex;align-items:center;justify-content:center;padding:1.4rem 0}
+
+.volver{
+  display:inline-flex;align-items:center;gap:.4rem;align-self:flex-start;
+  padding:.46rem .95rem;border-radius:var(--pastilla);
+  background:var(--solido);border:1px solid var(--linea);
+  font-size:.85rem;font-weight:580;color:var(--tinta-2);
+  box-shadow:var(--sombra-1);
+  transition:transform var(--rapido) var(--fluido), border-color var(--rapido);
+}
+.volver:hover{transform:translateX(-3px);border-color:var(--linea-fuerte);color:var(--tinta)}
+
+/* --- Página selectora --- */
+.selector{width:100%;max-width:760px;margin-inline:auto;text-align:center}
+.selector > .escudo-xg{margin:0 auto 1.3rem}
+.selector h1{font-size:clamp(1.7rem,4vw,2.5rem);margin-bottom:.5rem}
+.selector > p{color:var(--tinta-2);font-size:1rem;max-width:46ch;margin:0 auto clamp(1.6rem,4vw,2.4rem)}
+
+.tarjetas-acceso{display:grid;grid-template-columns:1fr 1fr;gap:1rem;text-align:left}
+@media (max-width:680px){.tarjetas-acceso{grid-template-columns:1fr}}
+
+.tarjeta-acceso{
+  display:flex;flex-direction:column;gap:.9rem;
+  padding:1.6rem 1.45rem;border-radius:var(--r-2xl);
+  background:var(--solido);border:1px solid var(--linea);box-shadow:var(--sombra-1);
+  transition:transform var(--normal) var(--fluido), box-shadow var(--normal), border-color var(--rapido);
+  position:relative;overflow:hidden;
+}
+.tarjeta-acceso:hover{transform:translateY(-5px);box-shadow:var(--sombra-3);border-color:var(--oro)}
+.tarjeta-acceso.tinta{background:linear-gradient(170deg,#FFFFFF,var(--oro-suave));border-color:var(--linea-fuerte);color:var(--tinta)}
+[data-tema="oscuro"] .tarjeta-acceso.tinta{background:linear-gradient(170deg,var(--solido),#121009);border:1px solid var(--linea-fuerte)}
+.tarjeta-acceso.tinta b,.tarjeta-acceso.tinta h3{color:var(--tinta)}
+.tarjeta-acceso.tinta p{color:var(--tinta-2)}
+.tarjeta-acceso.tinta .lista-mini li{color:var(--tinta-3)}
+.tarjeta-acceso h3{font-size:1.22rem;letter-spacing:-.026em}
+.tarjeta-acceso p{color:var(--tinta-2);font-size:.89rem;line-height:1.6}
+.tarjeta-acceso .lista-mini{list-style:none;display:grid;gap:.35rem;margin-top:.2rem}
+.tarjeta-acceso .lista-mini li{font-size:.82rem;color:var(--tinta-3);display:flex;gap:.45rem;align-items:flex-start}
+.tarjeta-acceso .lista-mini li::before{content:'·';font-weight:800;color:var(--oro)}
+.tarjeta-acceso .btn{margin-top:auto}
+
+/* --- Páginas de formulario --- */
+.caja-acceso{
+  width:100%;max-width:440px;margin-inline:auto;
+  background:var(--solido);border:1px solid var(--linea);
+  border-radius:var(--r-2xl);padding:clamp(1.6rem,4vw,2.2rem);
+  box-shadow:var(--sombra-3);
+}
+.caja-acceso .cumbre{display:flex;flex-direction:column;align-items:center;text-align:center;margin-bottom:1.6rem}
+.caja-acceso .cumbre h1{font-size:1.55rem;margin-top:1rem;letter-spacing:-.03em}
+.caja-acceso .cumbre p{color:var(--tinta-3);font-size:.88rem;margin-top:.35rem;line-height:1.5}
+.caja-acceso .marca-rol{
+  display:inline-flex;align-items:center;gap:.4rem;margin-top:.9rem;
+  padding:.3rem .8rem;border-radius:var(--pastilla);
+  font-size:.76rem;font-weight:680;
+}
+.caja-acceso .marca-rol.estudiante{background:var(--oro);color:var(--oro-tinta)}
+.caja-acceso .marca-rol.personal{background:linear-gradient(160deg,var(--oro-hondo),#8A6A1E);color:#FFF8E4}
+[data-tema="oscuro"] .caja-acceso .marca-rol.personal{background:#fff;color:#000}
+
+.ojo-btn{background:none;color:var(--tinta-3);font-size:1rem;padding:.2rem;flex:0 0 auto}
+.ojo-btn:hover{color:var(--tinta)}
+
+.bloqueo{
+  display:none;align-items:flex-start;gap:.6rem;margin-bottom:1.1rem;
+  padding:.85rem 1rem;border-radius:var(--r-md);
+  background:rgba(224,53,43,.08);border:1px solid rgba(224,53,43,.24);
+  color:var(--rojo-h);font-size:.84rem;line-height:1.5;
+}
+.bloqueo.ver{display:flex}
+
+.nota-acceso{
+  color:var(--tinta-3);font-size:.78rem;line-height:1.6;text-align:center;margin-top:1.1rem;
+}
+.nota-acceso a{color:var(--ambar-h);font-weight:640}
+[data-tema="oscuro"] .nota-acceso a{color:var(--oro)}
+.otra-puerta{
+  display:flex;align-items:center;justify-content:center;gap:.4rem;
+  margin-top:1.3rem;padding-top:1.2rem;border-top:1px solid var(--linea);
+  font-size:.83rem;color:var(--tinta-3);flex-wrap:wrap;
+}
+.otra-puerta a{font-weight:660;color:var(--tinta);display:inline-flex;align-items:center;gap:.3rem}
+.otra-puerta a:hover{color:var(--ambar-h)}
+
+.acceso-pie{text-align:center;color:var(--tinta-3);font-size:.79rem;line-height:1.8;max-width:60ch;margin:0 auto}
+/* Las tarjetas proyectan sombra: el pie necesita aire para no parecer pegado. */
+.selector > .acceso-pie{margin-top:clamp(1.9rem,4vw,2.6rem)}
+
+/* ---------------------------------------------------------------------
+   17. VISOR DE IMAGEN
+   --------------------------------------------------------------------- */
+.visor{
+  position:fixed;inset:0;z-index:8500;display:none;align-items:center;justify-content:center;padding:1.4rem;
+  background:rgba(6,6,8,.9);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+}
+.visor.abierto{display:flex;animation:apareceTelon .22s var(--fluido)}
+.visor img{max-width:96vw;max-height:90vh;border-radius:var(--r-lg);box-shadow:var(--sombra-3);object-fit:contain}
+.visor .cerrar-visor{
+  position:absolute;top:1.1rem;right:1.1rem;width:42px;height:42px;border-radius:50%;
+  display:grid;place-items:center;background:rgba(255,255,255,.14);
+  border:1px solid rgba(255,255,255,.24);color:#fff;font-size:1.2rem;
+}
+
+/* ---------------------------------------------------------------------
+   18. APARICIÓN AL DESPLAZAR
+   --------------------------------------------------------------------- */
+.aparece{opacity:0;transform:translateY(18px);transition:opacity .6s var(--fluido), transform .6s var(--fluido)}
+.aparece.visible{opacity:1;transform:none}
+
+/* ---------------------------------------------------------------------
+   18. PIEZAS DE LAS PÁGINAS SEPARADAS
+   --------------------------------------------------------------------- */
+
+/* Cabecera de las páginas de Comunicados y Matrícula */
+/* El ancho lo limita el TEXTO, no la sección: si se le pone max-width a la
+   sección, .marco la centra y la página entera aparece corrida a la derecha. */
+.cabecera-pagina{padding:clamp(2.4rem,6vw,4.2rem) 0 clamp(1rem,2vw,1.6rem)}
+.cabecera-pagina > *{max-width:64ch}
+.cabecera-pagina h1{margin:.4rem 0 .8rem;text-wrap:balance}
+.cabecera-pagina h1 em{font-style:normal;position:relative;white-space:nowrap}
+.cabecera-pagina h1 em::after{
+  content:'';position:absolute;left:-.1em;right:-.1em;bottom:.01em;height:.3em;z-index:-1;
+  background:linear-gradient(90deg,
+    rgba(212,175,55,.55), var(--oro) 9%, var(--oro) 91%, rgba(212,175,55,.55));
+  border-radius:.7em .5em .6em .8em / 50%;
+}
+.cabecera-pagina p{color:var(--tinta-2);font-size:1.04rem;line-height:1.7}
+
+/* Ficha de la institución (reemplaza a la línea de tiempo) */
+.ficha-ie{
+  background:var(--solido);border:1px solid var(--linea);
+  border-radius:var(--r-2xl);padding:clamp(1.3rem,2.6vw,1.8rem);
+  box-shadow:var(--sombra-2);position:relative;overflow:hidden;
+}
+.ficha-ie::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:4px;
+  background:linear-gradient(90deg,var(--oro),var(--oro-hondo),transparent);
+}
+.ficha-ie-cabeza{display:flex;align-items:center;gap:.9rem;margin-bottom:1.2rem}
+.ficha-ie-cabeza h3{font-size:1.2rem;letter-spacing:-.026em}
+.ficha-ie-cabeza p{font-size:.84rem;color:var(--tinta-3);margin-top:.1rem}
+
+.datos-ie{display:grid;gap:.1rem}
+.dato-ie{
+  display:flex;align-items:flex-start;gap:.75rem;
+  padding:.72rem .2rem;border-bottom:1px solid var(--linea);
+}
+.dato-ie:last-child{border-bottom:none}
+.dato-ie .ic{font-size:1.05rem;line-height:1.35;flex:0 0 1.5rem;text-align:center}
+.dato-ie small{display:block;font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;
+  color:var(--tinta-3);font-weight:700;margin-bottom:.12rem}
+.dato-ie b{display:block;font-size:.92rem;font-weight:620;line-height:1.45;color:var(--tinta)}
+.lema-ie{
+  margin-top:1.1rem;padding:.8rem .9rem;border-radius:var(--r-lg);
+  background:var(--oro-tenue);color:var(--ambar-h);
+  font-size:.92rem;font-weight:700;font-style:italic;text-align:center;
+}
+
+/* Filtros de comunicados */
+.filtros-com{display:flex;gap:.45rem;flex-wrap:wrap;margin-bottom:1.3rem}
+.chip-com{
+  padding:.45rem 1rem;border-radius:var(--pastilla);
+  font-size:.84rem;font-weight:600;color:var(--tinta-2);
+  background:var(--solido);border:1px solid var(--linea);
+  transition:all var(--rapido) var(--fluido);
+}
+.chip-com:hover{border-color:var(--linea-fuerte);color:var(--tinta)}
+.chip-com.on{background:var(--oro-tenue);color:var(--oro-hondo);border-color:var(--linea-fuerte);font-weight:700}
+[data-tema="oscuro"] .chip-com.on{background:var(--oro);color:var(--oro-tinta)}
+
+/* Pestañas de trámite (vacante / entrevista) */
+.pestanas-tramite{
+  display:inline-flex;gap:.2rem;padding:.28rem;margin:0 auto clamp(1.2rem,2.6vw,1.8rem);
+  border-radius:var(--pastilla);
+  background:var(--lienzo-2);border:1px solid var(--linea);
+}
+.pestanas-tramite{display:flex;width:fit-content}
+.pestanas-tramite .tramite{
+  padding:.55rem 1.15rem;border-radius:var(--pastilla);
+  font-size:.88rem;font-weight:620;color:var(--tinta-2);white-space:nowrap;
+  transition:all var(--rapido) var(--fluido);
+}
+.pestanas-tramite .tramite:hover{color:var(--tinta)}
+.pestanas-tramite .tramite.activo{background:var(--solido);color:var(--oro-hondo);box-shadow:var(--sombra-1)}
+[data-tema="oscuro"] .pestanas-tramite .tramite.activo{background:var(--oro);color:var(--oro-tinta)}
+
+.caja-tramite{max-width:760px;margin-inline:auto}
+
+@media (max-width:560px){
+  .pestanas-tramite{width:100%}
+  .pestanas-tramite .tramite{flex:1;text-align:center;padding:.55rem .6rem;font-size:.8rem}
+}
+
+/* Acciones dentro de una respuesta del asistente */
+.acciones-chat{display:flex;flex-direction:column;gap:.35rem;margin-top:.6rem}
+.accion-chat{
+  display:flex;align-items:center;justify-content:space-between;gap:.5rem;
+  padding:.5rem .75rem;border-radius:var(--r-md);
+  background:var(--tinta);color:#fff;
+  font-size:.82rem;font-weight:620;line-height:1.3;
+  transition:transform var(--rapido) var(--fluido), background var(--rapido);
+}
+.accion-chat:hover{transform:translateX(3px);background:#26262A}
+.accion-chat span{color:var(--oro);font-weight:800}
+[data-tema="oscuro"] .accion-chat{background:var(--oro);color:var(--oro-tinta)}
+[data-tema="oscuro"] .accion-chat span{color:var(--oro-tinta)}

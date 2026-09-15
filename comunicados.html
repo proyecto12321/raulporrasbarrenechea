@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Comunicados · I.E.P. Raúl Porras Barrenechea</title>
+<meta name="description" content="Comunicados institucionales y calendario académico de la I.E.P. Raúl Porras Barrenechea, Sunampe, Chincha.">
+<meta name="theme-color" content="#EDBE33">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%231A1814'/><text x='32' y='41' font-size='21' font-weight='800' fill='%23EDBE33' text-anchor='middle' font-family='Arial'>RPB</text></svg>">
+<link rel="stylesheet" href="assets/css/nucleo.css">
+<link rel="stylesheet" href="assets/css/portal.css">
+<link rel="stylesheet" href="assets/css/componentes.css">
+</head>
+<body class="portal" data-pagina="comunicados">
+
+<!-- ===================== BARRA SUPERIOR ===================== -->
+<header class="barra-flota" id="barraFlota">
+  <div class="marco">
+    <div class="cascara rel">
+      <a class="marca" href="index.html">
+        <span class="escudo"><span>RPB</span></span>
+        <span class="txt">
+          <b>I.E.P. Raúl Porras Barrenechea</b>
+          <small>Jardín · Primaria — Sunampe, Chincha</small>
+        </span>
+      </a>
+
+      <nav class="menu" id="menuPrincipal">
+        <a href="index.html"><span class="ic">🏠</span>Inicio</a>
+        <a href="comunicados.html" class="activo"><span class="ic">📣</span>Comunicados</a>
+        <a href="matricula.html"><span class="ic">📝</span>Matrícula</a>
+      </nav>
+
+      <div class="barra-acciones">
+        <button class="btn-tema" data-boton-tema onclick="U.alternarTema()" aria-label="Cambiar tema">🌙</button>
+        <a class="btn btn-oro" href="acceso.html"><span>👤</span> <span class="rotulo-ingresar">Ingresar</span></a>
+        <button class="btn-menu" id="btnMenuMovil" aria-label="Menú">☰</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ===================== CABECERA ===================== -->
+  <section class="marco cabecera-pagina">
+    <span class="ojal">Información al día</span>
+    <h1>Comunicados de la institución</h1>
+    <p>Todo lo que dirección y administración publican para las familias.
+       Aparecen aquí en cuanto se publican, sin que haya que recargar nada.</p>
+    <div class="fila g8 envolver mt16">
+      <span class="etiqueta e-verde"><span class="punto punto-vivo"></span> En vivo</span>
+      <span class="etiqueta e-gris" id="contadorComunicados">—</span>
+    </div>
+  </section>
+
+  <!-- ===================== LISTA ===================== -->
+  <section class="seccion marco" id="listado">
+    <div class="filtros-com" id="filtrosComunicados"></div>
+    <div class="pila g12" id="listaComunicados">
+      <div class="hueso hueso-bloque"></div>
+      <div class="hueso hueso-bloque"></div>
+      <div class="hueso hueso-bloque"></div>
+    </div>
+  </section>
+
+  <!-- ===================== CALENDARIO ===================== -->
+  <section class="seccion marco" id="calendario">
+    <div class="seccion-cabeza">
+      <span class="ojal">Año escolar</span>
+      <h2>Calendario académico <span data-anio></span></h2>
+      <p>Las fechas que conviene tener anotadas en casa.</p>
+    </div>
+    <div class="rejilla rejilla-4" id="listaCalendario"></div>
+  </section>
+
+  <!-- ===================== PIE ===================== -->
+  <footer class="pie marco">
+    <div class="cols">
+      <div>
+        <div class="fila g12 mb12">
+          <span class="escudo"><span>RPB</span></span>
+          <div>
+            <b class="pie-marca">I.E.P. Raúl Porras Barrenechea</b>
+            <small class="t-mudo">Sunampe · Chincha · Ica</small>
+          </div>
+        </div>
+        <p id="piePromesa"></p>
+      </div>
+      <div>
+        <h5>Institución</h5>
+        <ul>
+          <li><a href="index.html#historia">Historia del colegio</a></li>
+          <li><a href="index.html#lugares">Instalaciones</a></li>
+          <li><a href="index.html#aulas">Nuestras aulas</a></li>
+          <li><a href="index.html#triptico">Tríptico informativo</a></li>
+          <li><a href="comunicados.html#calendario">Calendario académico</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Trámites</h5>
+        <ul>
+          <li><a href="matricula.html#solicitud">Solicitud de vacante</a></li>
+          <li><a href="matricula.html#entrevista">Entrevista con la directora</a></li>
+          <li><a href="matricula.html#requisitos">Requisitos y costos</a></li>
+          <li><a href="matricula.html#asistente">Asistente virtual</a></li>
+          <li><a href="comunicados.html">Comunicados</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Sistema</h5>
+        <ul>
+          <li><a href="acceso-estudiante.html">Ingreso de estudiantes</a></li>
+          <li><a href="acceso-personal.html">Ingreso del personal</a></li>
+          <li><a href="#" id="enlaceSoporte">Soporte técnico</a></li>
+        </ul>
+        <h5 class="h5-suelto">Contacto</h5>
+        <ul id="pieContacto"></ul>
+      </div>
+    </div>
+    <div class="abajo">
+      <span id="pieAbajo"></span>
+      <span class="hashtag">#JuntosCambiaremosLaHistoria</span>
+    </div>
+  </footer>
+
+</main>
+<!-- ===================== CHATBOT FLOTANTE ===================== -->
+<button class="chat-burbuja" id="chatBurbuja" aria-label="Abrir asistente">💬<span class="globo" id="chatGlobo">1</span></button>
+<section class="chat-ventana" id="chatVentana" aria-label="Asistente virtual">
+  <header class="chat-cabeza">
+    <span class="loseta loseta-s l-oro">🤖</span>
+    <div class="crece">
+      <b>Asistente RPB</b>
+      <small><span class="punto punto-vivo"></span> En línea</small>
+    </div>
+    <button class="btn-ico" id="chatCerrar" aria-label="Cerrar"
+      class="btn-cerrar-claro">✕</button>
+  </header>
+  <div class="chat-cuerpo" id="chatCuerpoFlotante"></div>
+  <div class="chat-sugerencias" id="chatSugerenciasFlotante"></div>
+  <form class="chat-pie" id="chatFormFlotante">
+    <input id="chatTextoFlotante" placeholder="Escribe tu pregunta…" autocomplete="off" maxlength="200">
+    <button type="submit" aria-label="Enviar">➤</button>
+  </form>
+</section>
+
+<!-- ===================== VISOR DE IMAGEN ===================== -->
+<div class="visor" id="visor">
+  <button class="cerrar-visor" id="cerrarVisor" aria-label="Cerrar">✕</button>
+  <img id="visorImg" src="" alt="">
+</div>
+
+<div id="avisos"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/nucleo/semilla.js"></script>
+<script src="assets/js/nucleo/local.js"></script>
+<script src="assets/js/nucleo/config.js"></script>
+<script src="assets/js/nucleo/util.js"></script>
+<script src="assets/js/nucleo/seguridad.js"></script>
+<script src="assets/js/nucleo/datos.js"></script>
+<script src="assets/js/nucleo/sesion.js"></script>
+<script src="assets/js/nucleo/ui.js"></script>
+<script src="assets/js/modulos/chatbot.js"></script>
+<script src="assets/js/portal.js"></script>
+</body>
+</html>

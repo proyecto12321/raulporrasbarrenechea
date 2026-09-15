@@ -1,0 +1,12 @@
+# Archivos del sistema operativo y del editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.swp
+*~
+
+# Respaldos descargados desde el panel de soporte
+respaldo_*.json
+respaldo_*.csv

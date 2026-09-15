@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>I.E.P. Raúl Porras Barrenechea · Sunampe, Chincha</title>
+<meta name="description" content="Portal institucional de la I.E.P. Raúl Porras Barrenechea — Sunampe, Chincha, Ica. 26 años de servicio, aulas de 12 estudiantes, Inicial y Primaria. Matrícula 2026 abierta.">
+<meta name="theme-color" content="#EDBE33">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%231A1814'/><text x='32' y='41' font-size='21' font-weight='800' fill='%23EDBE33' text-anchor='middle' font-family='Arial'>RPB</text></svg>">
+<link rel="stylesheet" href="assets/css/nucleo.css">
+<link rel="stylesheet" href="assets/css/portal.css">
+<link rel="stylesheet" href="assets/css/componentes.css">
+</head>
+<body class="portal" data-pagina="inicio">
+
+<!-- ===================== BARRA SUPERIOR ===================== -->
+<header class="barra-flota" id="barraFlota">
+  <div class="marco">
+    <div class="cascara rel">
+      <a class="marca" href="index.html">
+        <span class="escudo"><span>RPB</span></span>
+        <span class="txt">
+          <b>I.E.P. Raúl Porras Barrenechea</b>
+          <small>Jardín · Primaria — Sunampe, Chincha</small>
+        </span>
+      </a>
+
+      <nav class="menu" id="menuPrincipal">
+        <a href="index.html" class="activo"><span class="ic">🏠</span>Inicio</a>
+        <a href="comunicados.html"><span class="ic">📣</span>Comunicados</a>
+        <a href="matricula.html"><span class="ic">📝</span>Matrícula</a>
+        <a href="#historia"><span class="ic">📖</span>Historia</a>
+        <a href="#lugares"><span class="ic">📷</span>Instalaciones</a>
+        <a href="#aulas"><span class="ic">🎒</span>Aulas</a>
+        <a href="#triptico"><span class="ic">📄</span>Tríptico</a>
+      </nav>
+
+      <div class="barra-acciones">
+        <button class="btn-tema" data-boton-tema onclick="U.alternarTema()" aria-label="Cambiar tema">🌙</button>
+        <a class="btn btn-oro" href="acceso.html"><span>👤</span> <span class="rotulo-ingresar">Ingresar</span></a>
+        <button class="btn-menu" id="btnMenuMovil" aria-label="Menú">☰</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="marco" id="inicio">
+    <!-- La foto de la fachada del colegio. La sube el área de soporte
+         desde su panel (clave "fachada"); mientras no exista, aquí se ve
+         el recuadro con el nombre, nunca una foto de otro lugar. -->
+    <figure class="fachada sin-fachada" id="fachadaColegio">
+      <img alt="Fachada de la I.E.P. Raúl Porras Barrenechea" class="oculto" draggable="false">
+      <div class="fachada-vacia">
+        <span class="ic">🏫</span>
+        <b>La entrada del colegio</b>
+        <small>Av. Los Libertadores N° 378 — Sunampe, Chincha</small>
+      </div>
+      <figcaption>
+        <b>I.E.P. Raúl Porras Barrenechea</b>
+        <small>Av. Los Libertadores N° 378 · Sunampe, Chincha, Ica</small>
+      </figcaption>
+    </figure>
+
+    <div class="portada">
+      <div>
+        <span class="insignia">
+          <span class="globo-oro">★</span>
+          <span id="insigniaTexto">26 años educando en Sunampe</span>
+        </span>
+
+        <h1>Todo el colegio,<br><em>en un solo lugar</em></h1>
+
+        <p class="bajada">
+          Educación de corazón desde el nivel Inicial hasta 6.° de Primaria,
+          con aulas de <b>12 estudiantes</b> y profesoras tituladas.
+          Aquí encuentras la historia del colegio, nuestras instalaciones,
+          el tríptico completo, los comunicados y tu acceso al sistema.
+        </p>
+
+        <div class="portada-botones">
+          <a class="btn btn-oro btn-g" href="#matricula">Solicitar vacante 2026 <span>→</span></a>
+          <a class="btn btn-claro btn-g" href="#historia">Conocer el colegio</a>
+        </div>
+      </div>
+
+      <!-- Acceso al sistema: dos puertas, en páginas separadas -->
+      <aside class="acceso-rapido tarjeta-3d">
+        <div class="cumbre">
+          <span class="escudo escudo-g"><span>RPB</span></span>
+          <h2>Acceso al sistema</h2>
+          <p>Cada quien entra por su propia puerta</p>
+        </div>
+
+        <a class="puerta" href="acceso-estudiante.html">
+          <span class="loseta l-oro">🎒</span>
+          <span class="txt">
+            <b>Soy estudiante</b>
+            <small>Ingresa solo con tu DNI</small>
+          </span>
+          <span class="flecha">›</span>
+        </a>
+
+        <a class="puerta" href="acceso-personal.html">
+          <span class="loseta l-gris">🧑‍🏫</span>
+          <span class="txt">
+            <b>Soy docente o personal</b>
+            <small>Usuario y contraseña institucional</small>
+          </span>
+          <span class="flecha">›</span>
+        </a>
+
+        <a class="puerta" href="#matricula">
+          <span class="loseta l-gris">👨‍👩‍👧</span>
+          <span class="txt">
+            <b>Soy padre o apoderado</b>
+            <small>Consulta y pide vacante sin ingresar</small>
+          </span>
+          <span class="flecha">›</span>
+        </a>
+
+        <p class="lema-firma">
+          «Todo por amor, nada por la fuerza»
+          <b>Juntos cambiaremos la historia</b>
+        </p>
+      </aside>
+    </div>
+  </section>
+  <section class="marco marco-corto">
+    <div class="tira-contadores aparece" id="contadores">
+      <div class="contador">
+        <span class="cifra" data-contar="65" id="cifraEstudiantes">0</span>
+        <span class="rotulo">Estudiantes matriculados</span>
+        <span class="detalle" id="detalleEstudiantes">año escolar 2026</span>
+      </div>
+      <div class="contador">
+        <span class="cifra" data-contar="26">0</span>
+        <span class="rotulo">Años de servicio</span>
+        <span class="detalle">a la comunidad de Sunampe</span>
+      </div>
+      <div class="contador">
+        <span class="cifra" data-contar="10">0</span>
+        <span class="rotulo">Docentes calificados</span>
+        <span class="detalle">profesoras tituladas</span>
+      </div>
+      <div class="contador">
+        <span class="cifra" data-contar="12">0</span>
+        <span class="rotulo">Estudiantes por aula</span>
+        <span class="detalle">enseñanza personalizada</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== HISTORIA ===================== -->
+  <section class="seccion marco" id="historia">
+    <div class="historia">
+      <div class="historia-texto">
+        <div class="seccion-cabeza">
+          <span class="ojal">Nuestra institución</span>
+          <h2>26 años de educación de corazón</h2>
+          <p id="historiaEntrada"></p>
+        </div>
+        <p id="historiaMeta"></p>
+        <div class="rejilla rejilla-2 mt-lista" id="listaVentajas"></div>
+        <blockquote class="cita-grande" id="citaIdeal"></blockquote>
+      </div>
+
+      <!-- Ficha de la institución -->
+      <aside class="ficha-ie tarjeta-3d" id="fichaInstitucion"></aside>
+    </div>
+  </section>
+
+  <!-- ===================== LUGARES (rueda 3D giratoria) ===================== -->
+  <section class="seccion marco" id="lugares">
+    <div class="seccion-cabeza centrada">
+      <span class="ojal">Instalaciones</span>
+      <h2>Los lugares de la I.E.</h2>
+      <p>El patio, el patio de juegos, el aula de computación, los dos pisos y
+         las escaleras. Pasan solas; también puedes arrastrarlas o usar las flechas.</p>
+    </div>
+
+    <div class="lugares">
+      <div class="rueda-escena" id="escenaLugares">
+        <div class="rueda-3d" id="ruedaLugares"></div>
+      </div>
+      <div class="lugares-mandos">
+        <button class="btn-ico" id="lugarAtras" aria-label="Lugar anterior">‹</button>
+        <span class="puntos" id="puntosLugares"></span>
+        <button class="btn-ico" id="lugarAdelante" aria-label="Lugar siguiente">›</button>
+      </div>
+      <p class="pista-arrastre">Arrastra o usa las flechas · toca una foto para traerla al frente</p>
+    </div>
+  </section>
+
+  <!-- ===================== AULAS (baraja deslizable 3D) ===================== -->
+  <section class="seccion marco" id="aulas">
+    <div class="seccion-cabeza centrada">
+      <span class="ojal">Dónde están los salones</span>
+      <h2>Nuestras aulas</h2>
+      <p>Inicial de 3 y 4 años comparte ambiente, 5 años tiene el suyo y Primaria
+         va un grado por aula. Los cupos son los de hoy, tomados de la base de datos.</p>
+    </div>
+
+    <div class="aulas-escena" id="escenaAulas">
+      <div class="aulas-pila" id="pilaAulas"></div>
+    </div>
+    <div class="aulas-mandos">
+      <button class="btn-ico" id="aulaAtras" aria-label="Aula anterior">‹</button>
+      <span class="rotulo-aula" id="rotuloAula">—</span>
+      <button class="btn-ico" id="aulaAdelante" aria-label="Aula siguiente">›</button>
+    </div>
+  </section>
+  <section class="seccion marco" id="triptico">
+    <div class="seccion-cabeza centrada">
+      <span class="ojal ojal-centrado">Material informativo</span>
+      <h2>El tríptico institucional</h2>
+      <p>No es una foto del folleto: es el folleto, con el texto de verdad.
+         Hojéalo cara por cara o ábrelo entero en 3D.</p>
+    </div>
+
+    <div class="folleto">
+      <div class="folleto-modos" role="tablist" aria-label="Cómo ver el tríptico">
+        <button class="modo activo" data-modo="hojear"    role="tab" aria-selected="true">📖 Hojear</button>
+        <button class="modo"        data-modo="desplegar" role="tab" aria-selected="false">🗺️ Ver desplegado</button>
+      </div>
+
+      <!-- ---------- Modo hojear ---------- -->
+      <div id="modoHojear">
+        <div class="lector">
+          <button class="hoja-flecha" id="hojaAtras" aria-label="Cara anterior">‹</button>
+          <div class="lector-escena" id="lectorEscena"></div>
+          <button class="hoja-flecha" id="hojaAdelante" aria-label="Cara siguiente">›</button>
+        </div>
+        <div class="lector-pie">
+          <span class="puntos" id="puntosHojas"></span>
+          <span class="lector-num" id="numHoja"></span>
+        </div>
+      </div>
+
+      <!-- ---------- Modo desplegado ---------- -->
+      <div id="modoDesplegar" hidden>
+        <div class="triptico-escena" id="escenaTriptico">
+          <div class="triptico cerrado" id="folletoTri"></div>
+        </div>
+        <div class="triptico-mandos">
+          <button class="btn btn-oro" id="btnAbrir">Abrir el tríptico</button>
+          <button class="btn btn-claro" id="btnVoltear">Ver el interior</button>
+          <button class="btn btn-fantasma" id="btnCentrar">Centrar</button>
+        </div>
+        <p class="pista-arrastre pista-3d">
+          👆 Arrástralo con el dedo para girarlo e inclinarlo · doble toque para abrirlo
+        </p>
+      </div>
+    </div>
+
+    <p class="triptico-pista">
+      <span class="solo-raton" id="pistaRaton">Usa las flechas del teclado para pasar las caras · </span>
+      También puedes ver <a href="#" id="verEscaneado" class="enlace-ambar">el tríptico escaneado</a>.
+    </p>
+  </section>
+
+  <!-- ===================== PIE ===================== -->
+  <footer class="pie marco">
+    <div class="cols">
+      <div>
+        <div class="fila g12 mb12">
+          <span class="escudo"><span>RPB</span></span>
+          <div>
+            <b class="pie-marca">I.E.P. Raúl Porras Barrenechea</b>
+            <small class="t-mudo">Sunampe · Chincha · Ica</small>
+          </div>
+        </div>
+        <p id="piePromesa"></p>
+      </div>
+      <div>
+        <h5>Institución</h5>
+        <ul>
+          <li><a href="index.html#historia">Historia del colegio</a></li>
+          <li><a href="index.html#lugares">Instalaciones</a></li>
+          <li><a href="index.html#aulas">Nuestras aulas</a></li>
+          <li><a href="index.html#triptico">Tríptico informativo</a></li>
+          <li><a href="comunicados.html#calendario">Calendario académico</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Trámites</h5>
+        <ul>
+          <li><a href="matricula.html#solicitud">Solicitud de vacante</a></li>
+          <li><a href="matricula.html#entrevista">Entrevista con la directora</a></li>
+          <li><a href="matricula.html#requisitos">Requisitos y costos</a></li>
+          <li><a href="matricula.html#asistente">Asistente virtual</a></li>
+          <li><a href="comunicados.html">Comunicados</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Sistema</h5>
+        <ul>
+          <li><a href="acceso-estudiante.html">Ingreso de estudiantes</a></li>
+          <li><a href="acceso-personal.html">Ingreso del personal</a></li>
+          <li><a href="#" id="enlaceSoporte">Soporte técnico</a></li>
+        </ul>
+        <h5 class="h5-suelto">Contacto</h5>
+        <ul id="pieContacto"></ul>
+      </div>
+    </div>
+    <div class="abajo">
+      <span id="pieAbajo"></span>
+      <span class="hashtag">#JuntosCambiaremosLaHistoria</span>
+    </div>
+  </footer>
+
+</main>
+<!-- ===================== CHATBOT FLOTANTE ===================== -->
+<button class="chat-burbuja" id="chatBurbuja" aria-label="Abrir asistente">💬<span class="globo" id="chatGlobo">1</span></button>
+<section class="chat-ventana" id="chatVentana" aria-label="Asistente virtual">
+  <header class="chat-cabeza">
+    <span class="loseta loseta-s l-oro">🤖</span>
+    <div class="crece">
+      <b>Asistente RPB</b>
+      <small><span class="punto punto-vivo"></span> En línea</small>
+    </div>
+    <button class="btn-ico" id="chatCerrar" aria-label="Cerrar"
+      class="btn-cerrar-claro">✕</button>
+  </header>
+  <div class="chat-cuerpo" id="chatCuerpoFlotante"></div>
+  <div class="chat-sugerencias" id="chatSugerenciasFlotante"></div>
+  <form class="chat-pie" id="chatFormFlotante">
+    <input id="chatTextoFlotante" placeholder="Escribe tu pregunta…" autocomplete="off" maxlength="200">
+    <button type="submit" aria-label="Enviar">➤</button>
+  </form>
+</section>
+
+<!-- ===================== VISOR DE IMAGEN ===================== -->
+<div class="visor" id="visor">
+  <button class="cerrar-visor" id="cerrarVisor" aria-label="Cerrar">✕</button>
+  <img id="visorImg" src="" alt="">
+</div>
+
+<div id="avisos"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/nucleo/semilla.js"></script>
+<script src="assets/js/nucleo/local.js"></script>
+<script src="assets/js/nucleo/config.js"></script>
+<script src="assets/js/nucleo/util.js"></script>
+<script src="assets/js/nucleo/seguridad.js"></script>
+<script src="assets/js/nucleo/datos.js"></script>
+<script src="assets/js/nucleo/sesion.js"></script>
+<script src="assets/js/nucleo/ui.js"></script>
+<script src="assets/js/modulos/chatbot.js"></script>
+<script src="assets/js/portal.js"></script>
+</body>
+</html>

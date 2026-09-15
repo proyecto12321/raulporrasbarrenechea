@@ -1,0 +1,675 @@
+/* =====================================================================
+   NÚCLEO — Sistema de diseño
+   I.E.P. Raúl Porras Barrenechea · Sunampe, Chincha, Ica
+   ---------------------------------------------------------------------
+   PALETA: blanco y dorado satinado. Nada más. Los grises son cálidos
+   (tiran a marrón, no a azul) para que acompañen al dorado, y los
+   colores de estado (verde, rojo, ámbar) están desaturados a propósito,
+   para que solo salten cuando de verdad importan.
+
+   Estética iOS: superficies blancas, curvas amplias, sombras suaves en
+   capas, tipografía del sistema y movimiento con resorte.
+   ===================================================================== */
+
+/* ---------------------------------------------------------------------
+   1. FICHAS DE DISEÑO (design tokens)
+   --------------------------------------------------------------------- */
+:root{
+  /* --- Amarillo institucional --------------------------------------
+     "Ni tan claro ni tan oscuro": ni el canario que encandila ni el
+     dorado viejo que tira a marrón. Este es el punto medio —un amarillo
+     dorado, cálido y con cuerpo— y de él salen las cuatro variantes:
+
+       --oro         el color de la marca: rellenos, aros, acentos
+       --oro-claro   el reflejo, para degradados y bordes iluminados
+       --oro-suave   el fondo lavado de las franjas y las filas activas
+       --oro-hondo   el tono para TEXTO sobre claro (contraste AA)
+
+     Regla de oro del sistema: --oro nunca se usa como color de letra
+     sobre blanco (no llega al contraste mínimo); para eso está
+     --oro-hondo. Y sobre --oro, la letra va en --oro-tinta. */
+  --oro:#EDBE33;
+  --oro-claro:#F8DC84;
+  --oro-suave:#FDF4DC;
+  --oro-hondo:#8E6B10;
+  --oro-tenue:rgba(237,190,51,.15);
+  --oro-tinta:#3A2B02;
+
+  /* --- Grises cálidos (el blanco y el casi-negro de la identidad) ---
+     Los cuatro niveles están calibrados para que el texto se LEA, no
+     solo para que se vea bonito:
+       --tinta    título y cuerpo (14:1 sobre blanco)
+       --tinta-2  texto secundario (7,9:1)
+       --tinta-3  texto apagado —fechas, rótulos, contadores— (5,4:1)
+       --tinta-4  solo decoración: flechas y textos de ejemplo
+     --tinta-3 era #8C857A y se quedaba en 3,6:1, por debajo del mínimo
+     que exige la norma (4,5:1 para texto normal). Todo el sistema usa
+     ese tono para la letra chica, así que subirlo aquí arregla de una
+     vez las fechas, los rótulos del menú, los contadores y las pistas. */
+  --tinta:#1A1814;
+  --tinta-2:#57524A;
+  --tinta-3:#6F6960;
+  --tinta-4:#9A9388;
+  --grafito:#2F2B24;
+  --humo:#3D382F;
+
+  /* --- Superficies (tema claro) --- */
+  --lienzo:#FBFAF6;
+  --lienzo-2:#F4F1E8;
+  --solido:#FFFFFF;
+  --vidrio:rgba(255,255,255,.80);
+  --vidrio-hondo:rgba(255,255,255,.93);
+  --velo:rgba(26,24,20,.42);
+
+  /* --- Trazos: el hilo fino es dorado, no gris --- */
+  --linea:rgba(26,24,20,.08);
+  --linea-fuerte:rgba(168,131,42,.30);
+  --linea-luz:rgba(255,255,255,.7);
+
+  /* --- Estados (desaturados; solo para semáforos) --- */
+  --verde:#3E8E5A;
+  --verde-h:#2C6B42;
+  --rojo:#C0483E;
+  --rojo-h:#9A352D;
+  --ambar:#B98A1E;
+  --ambar-h:#8C6614;
+
+  /* --- Sombras en capas, con tinte cálido --- */
+  --sombra-1:0 1px 2px rgba(26,24,20,.04), 0 2px 8px rgba(26,24,20,.05);
+  --sombra-2:0 2px 6px rgba(26,24,20,.06), 0 10px 28px rgba(26,24,20,.07);
+  --sombra-3:0 8px 20px rgba(26,24,20,.09), 0 28px 60px rgba(26,24,20,.12);
+  --brillo-oro:0 3px 12px rgba(212,175,55,.22);
+
+  /* --- Curvas --- */
+  --r-2xl:32px;
+  --r-xl:24px;
+  --r-lg:18px;
+  --r-md:14px;
+  --r-sm:10px;
+  --pastilla:980px;
+
+  /* --- Movimiento --- */
+  --fluido:cubic-bezier(.32,.72,0,1);
+  --resorte:cubic-bezier(.34,1.42,.64,1);
+  --rapido:.16s;
+  --normal:.3s;
+  --lento:.55s;
+
+  /* --- Tipografía --- */
+  --letra:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Segoe UI Variable","Segoe UI",Inter,Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+
+  /* --- Desenfoque --- */
+  --difuso:saturate(175%) blur(24px);
+  --difuso-suave:saturate(160%) blur(14px);
+}
+
+/* --- Tema oscuro: negro cálido con acentos dorados --- */
+[data-tema="oscuro"]{
+  --tinta:#F7F4EC;
+  --tinta-2:#CFC8BA;
+  --tinta-3:#938C7E;
+  --tinta-4:#615B50;
+  --grafito:#EDE8DC;
+  --humo:#D6D0C3;
+
+  /* Negros cálidos, no azulados: al lado del dorado se ven como
+     terciopelo en vez de como pantalla apagada. */
+  --lienzo:#0E0D0A;
+  --lienzo-2:#17150F;
+  --solido:#1C1A14;
+  --vidrio:rgba(28,26,20,.78);
+  --vidrio-hondo:rgba(20,18,13,.94);
+  --velo:rgba(0,0,0,.66);
+
+  --linea:rgba(240,230,200,.11);
+  --linea-fuerte:rgba(212,175,55,.34);
+  --linea-luz:rgba(255,255,255,.06);
+
+  /* En oscuro el amarillo se aclara: sobre negro cálido, el mismo tono
+     del tema claro se apagaría. --oro-hondo aquí NO es un marrón para
+     texto sino un amarillo legible, porque el contraste se invierte:
+     sobre fondo oscuro, la letra tiene que ser más clara, no más
+     oscura. Así cualquier texto marcado con --oro-hondo sigue
+     leyéndose en los dos temas sin tocar el HTML. */
+  --oro:#F2CB4F;
+  --oro-claro:#FBE9A6;
+  --oro-suave:#2E2713;
+  --oro-hondo:#F0CB63;
+  --oro-tenue:rgba(242,203,79,.18);
+  --oro-tinta:#1A1503;
+
+  --verde:#5FBE80;
+  --verde-h:#7ED09A;
+  --rojo:#E2726A;
+  --rojo-h:#EE958E;
+  --ambar:#E5B84F;
+  --ambar-h:#F0CC79;
+
+  --sombra-1:0 1px 2px rgba(0,0,0,.5), 0 2px 8px rgba(0,0,0,.4);
+  --sombra-2:0 2px 6px rgba(0,0,0,.55), 0 10px 28px rgba(0,0,0,.5);
+  --sombra-3:0 8px 20px rgba(0,0,0,.6), 0 28px 64px rgba(0,0,0,.7);
+  --brillo-oro:0 4px 18px rgba(212,175,55,.28);
+}
+
+/* ---------------------------------------------------------------------
+   2. BASE
+   --------------------------------------------------------------------- */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--letra);
+  background:var(--lienzo);
+  color:var(--tinta);
+  line-height:1.55;
+  font-size:15px;
+  letter-spacing:-.006em;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  min-height:100vh;
+  transition:background var(--normal) var(--fluido), color var(--normal) var(--fluido);
+}
+a{color:inherit;text-decoration:none}
+img,svg{max-width:100%;display:block}
+button,input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
+button{cursor:pointer;border:none;background:none}
+h1,h2,h3,h4{line-height:1.14;letter-spacing:-.028em;font-weight:680}
+h1{font-size:clamp(2rem,4.6vw,3.5rem);letter-spacing:-.04em}
+h2{font-size:clamp(1.5rem,2.9vw,2.3rem);letter-spacing:-.034em}
+h3{font-size:1.1rem}
+small{font-size:.8rem}
+::selection{background:var(--oro);color:var(--oro-tinta)}
+
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--linea-fuerte);border-radius:980px;border:3px solid transparent;background-clip:content-box}
+::-webkit-scrollbar-thumb:hover{background:var(--tinta-3);background-clip:content-box}
+
+:focus-visible{outline:2.5px solid var(--oro-hondo);outline-offset:3px;border-radius:6px}
+.solo-lectores{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms !important;transition-duration:.001ms !important;scroll-behavior:auto !important}
+}
+
+/* ---------------------------------------------------------------------
+   3. CONTENEDORES
+   --------------------------------------------------------------------- */
+.marco{width:100%;max-width:1200px;margin:0 auto;padding-inline:clamp(1rem,4vw,2rem)}
+.marco-ancho{max-width:1560px}
+.pila{display:flex;flex-direction:column}
+.fila{display:flex;align-items:center}
+.entre{justify-content:space-between}
+.g4{gap:.25rem}.g8{gap:.5rem}.g12{gap:.75rem}.g16{gap:1rem}.g24{gap:1.5rem}
+.crece{flex:1}
+.envolver{flex-wrap:wrap}
+
+.rejilla{display:grid;gap:1rem}
+.rejilla-2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.rejilla-3{grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+.rejilla-4{grid-template-columns:repeat(auto-fit,minmax(196px,1fr))}
+
+/* ---------------------------------------------------------------------
+   4. SUPERFICIES
+   --------------------------------------------------------------------- */
+.vidrio{
+  background:var(--vidrio);
+  backdrop-filter:var(--difuso);
+  -webkit-backdrop-filter:var(--difuso);
+  border:1px solid var(--linea);
+  box-shadow:var(--sombra-2);
+  border-radius:var(--r-xl);
+}
+
+.tarjeta{
+  background:var(--solido);
+  border:1px solid var(--linea);
+  border-radius:var(--r-xl);
+  box-shadow:var(--sombra-1);
+  padding:1.35rem;
+  transition:transform var(--normal) var(--fluido), box-shadow var(--normal) var(--fluido), border-color var(--rapido);
+}
+.tarjeta-solida{background:var(--solido)}
+.tarjeta-viva{cursor:pointer}
+.tarjeta-viva:hover{transform:translateY(-3px);box-shadow:var(--sombra-2);border-color:var(--linea-fuerte)}
+.tarjeta-viva:active{transform:translateY(-1px) scale(.995)}
+
+/* Tarjeta con acento amarillo al borde superior */
+.tarjeta-oro{border-top:3px solid var(--oro)}
+/* Tarjeta negra, para destacar una sola cosa por pantalla */
+.tarjeta-tinta{
+  background:var(--tinta);color:#fff;border-color:transparent;
+  box-shadow:var(--sombra-2);
+}
+[data-tema="oscuro"] .tarjeta-tinta{background:#000;border:1px solid var(--linea)}
+.tarjeta-tinta h1,.tarjeta-tinta h2,.tarjeta-tinta h3{color:#fff}
+.tarjeta-tinta .t-mudo{color:rgba(255,255,255,.55)}
+.tarjeta-tinta .t-2{color:rgba(255,255,255,.8)}
+
+.tarjeta > .cabeza{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1.05rem;flex-wrap:wrap}
+.tarjeta > .cabeza h3{font-size:1.02rem;font-weight:660;display:flex;align-items:center;gap:.5rem}
+.tarjeta > .cabeza p{font-size:.82rem;color:var(--tinta-3);margin-top:.15rem}
+
+/* ---------------------------------------------------------------------
+   5. ICONOS EN LOSETA
+   ---------------------------------------------------------------------
+   Las variantes conservan sus nombres antiguos para no romper el código,
+   pero ahora todas viven en la escala amarillo–negro–gris.
+   --------------------------------------------------------------------- */
+.loseta{
+  width:44px;height:44px;flex:0 0 44px;
+  border-radius:13px;
+  display:grid;place-items:center;
+  font-size:1.2rem;color:#fff;
+  box-shadow:var(--sombra-1);
+}
+.loseta-g{width:56px;height:56px;flex-basis:56px;border-radius:17px;font-size:1.45rem}
+.loseta-s{width:32px;height:32px;flex-basis:32px;border-radius:10px;font-size:.9rem}
+
+/* Toda la familia vive entre el dorado y el gris cálido: nada de azules
+   ni morados. Lo que cambia entre una loseta y otra es el tono, no el
+   color, para que el tablero se lea como una sola pieza. */
+.l-oro    {background:linear-gradient(155deg,var(--oro-claro),var(--oro) 45%,var(--oro-hondo));color:var(--oro-tinta)}
+.l-marino {background:linear-gradient(155deg,#3A342A,#1A1814)}
+.l-azul   {background:linear-gradient(155deg,#6B6152,#3A342A)}
+.l-morado {background:linear-gradient(155deg,#A8832A,#6B5316);color:#FFF8E4}
+.l-agua   {background:linear-gradient(155deg,#C9BFA6,#8C857A)}
+.l-gris   {background:linear-gradient(155deg,#F2EDE0,#DCD4C2);color:var(--tinta)}
+.l-verde  {background:linear-gradient(155deg,#5AA97A,var(--verde-h))}
+.l-rojo   {background:linear-gradient(155deg,#D06A61,var(--rojo-h))}
+.l-naranja{background:linear-gradient(155deg,var(--oro-claro),var(--ambar));color:var(--oro-tinta)}
+[data-tema="oscuro"] .l-marino{background:linear-gradient(155deg,#4A4237,#221F18)}
+[data-tema="oscuro"] .l-azul  {background:linear-gradient(155deg,#6B6152,#332E25)}
+[data-tema="oscuro"] .l-gris{background:linear-gradient(155deg,#3A352B,#26231C);color:var(--tinta)}
+
+/* ---------------------------------------------------------------------
+   6. ESCUDO
+   ---------------------------------------------------------------------
+   Recreado con CSS a partir del escudo real: campo negro, banda superior
+   y monograma. No es la insignia original, es su versión tipográfica
+   para pantalla.
+   --------------------------------------------------------------------- */
+.escudo{
+  width:42px;height:46px;flex:0 0 42px;
+  background:linear-gradient(170deg,#FFFDF7,var(--oro-suave));
+  border:1.5px solid var(--oro);
+  border-radius:8px 8px 18px 18px / 8px 8px 26px 26px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;
+  box-shadow:0 3px 12px rgba(168,131,42,.22), inset 0 1px 0 rgba(255,255,255,.9);
+  overflow:hidden;position:relative;
+}
+[data-tema="oscuro"] .escudo{
+  background:linear-gradient(170deg,#241F14,#141109);
+  box-shadow:0 3px 12px rgba(0,0,0,.5), inset 0 1px 0 rgba(212,175,55,.25);
+}
+.escudo::before{
+  content:'I.E.P.';
+  font-size:.34rem;font-weight:800;letter-spacing:.1em;
+  color:var(--oro-hondo);opacity:.95;line-height:1;
+}
+[data-tema="oscuro"] .escudo::before{color:var(--oro)}
+.escudo span{
+  font-weight:850;font-size:.74rem;letter-spacing:.02em;line-height:1;
+  color:var(--tinta);font-family:var(--letra);
+}
+.escudo::after{
+  content:'';position:absolute;bottom:5px;left:50%;transform:translateX(-50%);
+  width:16px;height:2px;border-radius:2px;background:var(--oro);
+}
+/* Con la insignia real subida por Soporte: fuera marco, fuera fondo y
+   fuera el monograma dibujado con CSS. */
+.escudo.con-logo{
+  background:none;border:none;box-shadow:none;border-radius:10px;
+  padding:0;overflow:visible;
+}
+.escudo.con-logo::before,.escudo.con-logo::after{content:none;display:none}
+
+.escudo-g{width:74px;height:82px;flex-basis:74px;border-width:2.5px;border-radius:12px 12px 30px 30px / 12px 12px 44px 44px}
+.escudo-g::before{font-size:.56rem}
+.escudo-g span{font-size:1.34rem}
+.escudo-g::after{bottom:10px;width:30px;height:3px}
+.escudo-xg{width:112px;height:124px;flex-basis:112px;border-width:3px;border-radius:16px 16px 44px 44px / 16px 16px 64px 64px}
+.escudo-xg::before{font-size:.8rem}
+.escudo-xg span{font-size:2rem}
+.escudo-xg::after{bottom:16px;width:46px;height:4px}
+
+/* ---------------------------------------------------------------------
+   7. BOTONES
+   --------------------------------------------------------------------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:.5rem;
+  height:42px;padding:0 1.2rem;border-radius:var(--pastilla);
+  font-size:.92rem;font-weight:620;letter-spacing:-.01em;
+  border:1px solid transparent;
+  transition:transform var(--rapido) var(--resorte), box-shadow var(--rapido), background var(--rapido), opacity var(--rapido), border-color var(--rapido);
+  white-space:nowrap;user-select:none;
+}
+.btn:hover{transform:translateY(-1.5px)}
+.btn:active{transform:scale(.97)}
+.btn:disabled{opacity:.45;pointer-events:none;transform:none}
+.btn-g{height:52px;padding:0 1.8rem;font-size:1.02rem}
+.btn-xg{height:56px;padding:0 2rem;font-size:1.04rem;width:100%}
+.btn-s{height:33px;padding:0 .85rem;font-size:.81rem}
+.btn-bloque{width:100%}
+
+/* Primario: dorado satinado */
+.btn-oro{background:linear-gradient(160deg,var(--oro-claro),var(--oro) 42%,var(--oro-hondo));color:var(--oro-tinta);box-shadow:var(--brillo-oro)}
+.btn-oro:hover{box-shadow:0 6px 18px rgba(212,175,55,.34)}
+/* Secundario: grafito cálido (el contrapunto del dorado) */
+.btn-marino{background:var(--grafito);color:#FFFBF0;box-shadow:var(--sombra-1)}
+.btn-marino:hover{background:var(--tinta);box-shadow:var(--sombra-2)}
+[data-tema="oscuro"] .btn-marino{background:var(--oro);color:var(--oro-tinta)}
+[data-tema="oscuro"] .btn-marino:hover{background:var(--oro-claro)}
+/* Terciario: blanco con borde */
+.btn-claro{background:var(--solido);color:var(--tinta);border-color:var(--linea-fuerte);box-shadow:var(--sombra-1)}
+.btn-claro:hover{border-color:var(--tinta-3)}
+.btn-fantasma{background:transparent;color:var(--tinta-2);border-color:var(--linea-fuerte)}
+.btn-fantasma:hover{background:var(--lienzo-2);color:var(--tinta)}
+.btn-plano{background:transparent;color:var(--oro-hondo);padding:0 .6rem;font-weight:640}
+.btn-plano:hover{background:var(--oro-tenue)}
+[data-tema="oscuro"] .btn-plano{color:var(--oro)}
+/* Estados */
+.btn-verde{background:var(--verde-h);color:#fff;box-shadow:var(--sombra-1)}
+.btn-rojo{background:var(--rojo-h);color:#fff;box-shadow:var(--sombra-1)}
+
+.btn-ico{
+  width:38px;height:38px;padding:0;border-radius:50%;
+  display:grid;place-items:center;font-size:1rem;
+  background:var(--solido);border:1px solid var(--linea);color:var(--tinta-2);
+  transition:transform var(--rapido) var(--resorte), background var(--rapido), border-color var(--rapido);
+}
+.btn-ico:hover{transform:scale(1.08);color:var(--tinta);border-color:var(--linea-fuerte)}
+.btn-ico:active{transform:scale(.94)}
+
+/* ---------------------------------------------------------------------
+   8. CAMPOS
+   --------------------------------------------------------------------- */
+.campo{display:flex;flex-direction:column;gap:.36rem;margin-bottom:.95rem}
+.campo > label{font-size:.79rem;font-weight:620;color:var(--tinta-2);margin-left:.15rem;display:flex;align-items:center;gap:.35rem}
+.campo .obligatorio{color:var(--rojo)}
+.campo .ayuda{font-size:.74rem;color:var(--tinta-3);margin-left:.15rem}
+
+.caja{
+  display:flex;align-items:center;gap:.6rem;
+  background:var(--solido);
+  border:1px solid var(--linea-fuerte);
+  border-radius:var(--r-md);
+  padding:0 .9rem;height:48px;
+  transition:border-color var(--rapido), box-shadow var(--rapido);
+}
+.caja:focus-within{border-color:var(--oro);box-shadow:0 0 0 4px var(--oro-tenue)}
+.caja .ic{font-size:1.02rem;opacity:.65;flex:0 0 auto}
+.caja input,.caja select,.caja textarea{
+  flex:1;background:none;border:none;outline:none;height:100%;width:100%;
+  font-size:.95rem;color:var(--tinta);min-width:0;
+}
+.caja select{cursor:pointer;appearance:none;-webkit-appearance:none;padding-right:1.2rem;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' fill='none' stroke='%238A8A8F' stroke-width='1.8' stroke-linecap='round'/></svg>");
+  background-repeat:no-repeat;background-position:right .1rem center;background-size:11px}
+.caja textarea{height:auto;padding:.8rem 0;resize:vertical;line-height:1.5}
+.caja-alta{height:auto;min-height:104px;align-items:flex-start;padding-block:.2rem}
+.caja input::placeholder,.caja textarea::placeholder{color:var(--tinta-4)}
+.caja.ok{border-color:var(--verde);box-shadow:0 0 0 4px rgba(52,168,83,.12)}
+.caja.mal{border-color:var(--rojo);box-shadow:0 0 0 4px rgba(224,53,43,.12)}
+.caja.mal .ic{color:var(--rojo)}
+
+/* Campo alto, usado en el acceso */
+.caja-ios{height:56px;border-radius:var(--r-lg);font-size:1.04rem}
+.caja-ios input{font-size:1.04rem}
+.caja-ios.pin input{font-size:1.4rem;font-weight:650;letter-spacing:.3em;font-variant-numeric:tabular-nums}
+
+.pista{font-size:.76rem;margin-left:.15rem;display:none;align-items:center;gap:.3rem;line-height:1.4}
+.pista.ver{display:flex}
+.pista.buena{color:var(--verde-h)}
+.pista.mala{color:var(--rojo-h)}
+
+.palanca{position:relative;width:48px;height:29px;flex:0 0 48px}
+.palanca input{opacity:0;width:0;height:0;position:absolute}
+.palanca i{position:absolute;inset:0;border-radius:980px;background:var(--linea-fuerte);transition:background var(--normal) var(--fluido);cursor:pointer}
+.palanca i::after{content:'';position:absolute;top:3px;left:3px;width:23px;height:23px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.25);transition:transform var(--normal) var(--resorte)}
+.palanca input:checked + i{background:var(--oro)}
+.palanca input:checked + i::after{transform:translateX(19px)}
+
+.segmentado{
+  display:inline-flex;gap:3px;padding:3px;border-radius:var(--pastilla);
+  background:var(--lienzo-2);border:1px solid var(--linea);
+}
+.segmentado button{
+  padding:.42rem 1rem;border-radius:var(--pastilla);
+  font-size:.85rem;font-weight:620;color:var(--tinta-3);
+  transition:all var(--rapido) var(--fluido);white-space:nowrap;
+}
+.segmentado button.activo{background:var(--solido);color:var(--tinta);box-shadow:var(--sombra-1)}
+
+/* ---------------------------------------------------------------------
+   9. ETIQUETAS
+   --------------------------------------------------------------------- */
+.etiqueta{
+  display:inline-flex;align-items:center;gap:.3rem;
+  padding:.24rem .66rem;border-radius:var(--pastilla);
+  font-size:.735rem;font-weight:660;white-space:nowrap;
+  border:1px solid transparent;
+}
+.e-oro    {background:var(--oro-tenue);color:var(--ambar-h);border-color:rgba(212,175,55,.42)}
+.e-verde  {background:rgba(52,168,83,.12);color:var(--verde-h);border-color:rgba(52,168,83,.28)}
+.e-rojo   {background:rgba(224,53,43,.1);color:var(--rojo-h);border-color:rgba(224,53,43,.24)}
+.e-azul   {background:var(--lienzo-2);color:var(--tinta-2);border-color:var(--linea-fuerte)}
+.e-naranja{background:var(--oro-tenue);color:var(--ambar-h);border-color:rgba(212,175,55,.34)}
+.e-morado {background:var(--lienzo-2);color:var(--tinta-2);border-color:var(--linea-fuerte)}
+.e-gris   {background:var(--lienzo-2);color:var(--tinta-3);border-color:var(--linea)}
+.e-tinta  {background:var(--tinta);color:#fff;border-color:transparent}
+[data-tema="oscuro"] .e-oro{color:var(--oro)}
+[data-tema="oscuro"] .e-tinta{background:#fff;color:#000}
+
+.punto{width:7px;height:7px;border-radius:50%;flex:0 0 7px;display:inline-block}
+.punto-vivo{background:var(--verde);box-shadow:0 0 0 0 rgba(52,168,83,.55);animation:latido 2.2s infinite}
+@keyframes latido{70%{box-shadow:0 0 0 8px rgba(52,168,83,0)}100%{box-shadow:0 0 0 0 rgba(52,168,83,0)}}
+
+/* ---------------------------------------------------------------------
+   10. TABLAS
+   --------------------------------------------------------------------- */
+.tabla-marco{border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--linea);background:var(--solido)}
+.tabla-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table.tabla{width:100%;border-collapse:collapse;font-size:.875rem;min-width:600px}
+table.tabla th{
+  text-align:left;font-weight:660;font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;
+  color:var(--tinta-3);padding:.76rem .9rem;background:var(--lienzo);
+  border-bottom:1px solid var(--linea);position:sticky;top:0;z-index:2;white-space:nowrap;
+}
+table.tabla td{padding:.7rem .9rem;border-bottom:1px solid var(--linea);vertical-align:middle}
+table.tabla tbody tr{transition:background var(--rapido)}
+table.tabla tbody tr:hover{background:var(--lienzo)}
+table.tabla tbody tr:last-child td{border-bottom:none}
+table.tabla .num{font-variant-numeric:tabular-nums;text-align:right}
+/* Una celda de tabla con display:flex deja de ser celda y rompe la rejilla de
+   columnas: el flex va en el div de dentro, la celda solo alinea a la derecha. */
+table.tabla td.acciones{text-align:right;white-space:nowrap}
+table.tabla div.acciones{display:flex;gap:.3rem;justify-content:flex-end}
+.tabla-vacia{padding:3rem 1.5rem;text-align:center;color:var(--tinta-3)}
+.tabla-vacia .icono{font-size:2.4rem;opacity:.4;margin-bottom:.6rem}
+
+.avatar{
+  width:34px;height:34px;flex:0 0 34px;border-radius:50%;
+  display:grid;place-items:center;font-weight:720;font-size:.76rem;color:#fff;
+  background:linear-gradient(155deg,#3A3A3C,#1A1814);
+}
+.avatar-oro{background:linear-gradient(155deg,var(--oro-claro),var(--oro-hondo));color:var(--oro-tinta)}
+.avatar-g{width:52px;height:52px;flex-basis:52px;font-size:1.06rem}
+[data-tema="oscuro"] .avatar{background:linear-gradient(155deg,#4A4A4F,#26262A)}
+
+/* ---------------------------------------------------------------------
+   11. WIDGETS DE MÉTRICA
+   --------------------------------------------------------------------- */
+.kpi{
+  background:var(--solido);
+  border:1px solid var(--linea);border-radius:var(--r-lg);padding:1.1rem 1.15rem;
+  box-shadow:var(--sombra-1);position:relative;overflow:hidden;
+  transition:transform var(--normal) var(--fluido), box-shadow var(--normal);
+}
+.kpi:hover{transform:translateY(-3px);box-shadow:var(--sombra-2)}
+.kpi .fila-top{display:flex;align-items:flex-start;justify-content:space-between;gap:.6rem;margin-bottom:.65rem}
+.kpi .valor{font-size:1.95rem;font-weight:720;letter-spacing:-.04em;line-height:1;font-variant-numeric:tabular-nums}
+.kpi .rotulo{font-size:.78rem;color:var(--tinta-3);margin-top:.3rem;font-weight:520}
+.kpi .delta{font-size:.74rem;font-weight:660;display:inline-flex;align-items:center;gap:.2rem;margin-top:.5rem}
+.kpi .delta.sube{color:var(--verde-h)}
+.kpi .delta.baja{color:var(--rojo-h)}
+
+.barra{height:7px;border-radius:980px;background:var(--lienzo-2);overflow:hidden}
+.barra > i{display:block;height:100%;border-radius:980px;background:linear-gradient(90deg,var(--oro),var(--oro-hondo));transition:width .8s var(--fluido)}
+.barra.verde > i{background:linear-gradient(90deg,var(--verde),var(--verde-h))}
+.barra.azul > i{background:linear-gradient(90deg,#4A4A4F,#1A1814)}
+.barra.roja > i{background:linear-gradient(90deg,var(--rojo),var(--rojo-h))}
+
+.anillo{width:74px;height:74px;border-radius:50%;display:grid;place-items:center;position:relative;flex:0 0 74px}
+.anillo::before{content:'';position:absolute;inset:8px;border-radius:50%;background:var(--solido)}
+.anillo b{position:relative;font-size:1rem;font-weight:720;font-variant-numeric:tabular-nums}
+
+/* ---------------------------------------------------------------------
+   12. AVISOS Y BANDAS
+   --------------------------------------------------------------------- */
+#avisos{
+  position:fixed;bottom:1.3rem;right:1.3rem;z-index:9000;
+  display:flex;flex-direction:column;gap:.55rem;align-items:flex-end;pointer-events:none;
+  max-width:calc(100vw - 2.6rem);
+}
+.aviso{
+  display:flex;align-items:center;gap:.7rem;pointer-events:auto;
+  background:var(--tinta);color:#fff;
+  border-radius:var(--r-lg);
+  padding:.82rem 1.05rem;box-shadow:var(--sombra-3);
+  font-size:.89rem;font-weight:520;max-width:400px;
+  animation:entraAviso .4s var(--resorte);
+}
+[data-tema="oscuro"] .aviso{background:#fff;color:#000}
+.aviso.sale{animation:saleAviso .28s var(--fluido) forwards}
+.aviso .ic{font-size:1.1rem;flex:0 0 auto}
+.aviso.ok{border-left:3px solid var(--oro)}
+.aviso.error{border-left:3px solid var(--rojo)}
+.aviso.info{border-left:3px solid #fff}
+[data-tema="oscuro"] .aviso.info{border-left-color:#000}
+.aviso.alerta{border-left:3px solid var(--ambar)}
+@keyframes entraAviso{from{opacity:0;transform:translateX(42px) scale(.94)}to{opacity:1;transform:none}}
+@keyframes saleAviso{to{opacity:0;transform:translateX(42px) scale(.94)}}
+
+.banda{
+  display:flex;align-items:flex-start;gap:.7rem;
+  padding:.85rem 1.05rem;border-radius:var(--r-md);
+  font-size:.86rem;line-height:1.55;
+}
+.banda .ic{font-size:1.02rem;flex:0 0 auto;margin-top:.05rem}
+.banda-info{background:var(--lienzo-2);color:var(--tinta-2);border:1px solid var(--linea-fuerte)}
+.banda-ok{background:rgba(52,168,83,.1);color:var(--verde-h);border:1px solid rgba(52,168,83,.24)}
+.banda-mal{background:rgba(224,53,43,.08);color:var(--rojo-h);border:1px solid rgba(224,53,43,.22)}
+.banda-ojo{background:var(--oro-tenue);color:var(--ambar-h);border:1px solid rgba(212,175,55,.34)}
+[data-tema="oscuro"] .banda-ojo{color:var(--oro)}
+.banda.oculto{display:none}
+
+/* ---------------------------------------------------------------------
+   13. MODALES
+   --------------------------------------------------------------------- */
+.telon{
+  position:fixed;inset:0;z-index:8000;
+  background:var(--velo);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  display:flex;align-items:center;justify-content:center;padding:1.2rem;
+  animation:apareceTelon .22s var(--fluido);
+}
+@keyframes apareceTelon{from{opacity:0}to{opacity:1}}
+.hoja{
+  width:100%;max-width:560px;max-height:88vh;overflow:hidden;
+  background:var(--solido);
+  border:1px solid var(--linea);border-radius:var(--r-2xl);
+  box-shadow:var(--sombra-3);
+  display:flex;flex-direction:column;
+  animation:subeHoja .4s var(--resorte);
+}
+.hoja-ancha{max-width:860px}
+@keyframes subeHoja{from{opacity:0;transform:translateY(26px) scale(.97)}to{opacity:1;transform:none}}
+.hoja > header{
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  padding:1.15rem 1.4rem;border-bottom:1px solid var(--linea);flex:0 0 auto;
+}
+.hoja > header h3{font-size:1.04rem;font-weight:680}
+.hoja > header p{font-size:.8rem;color:var(--tinta-3);margin-top:.15rem}
+.hoja > .cuerpo{padding:1.3rem 1.4rem;overflow-y:auto;flex:1 1 auto}
+.hoja > footer{
+  display:flex;gap:.55rem;justify-content:flex-end;flex-wrap:wrap;
+  padding:1rem 1.4rem;border-top:1px solid var(--linea);flex:0 0 auto;background:var(--lienzo);
+}
+@media (max-width:560px){
+  .telon{align-items:flex-end;padding:0}
+  .hoja{max-width:none;max-height:92vh;border-radius:var(--r-2xl) var(--r-2xl) 0 0;animation:subeHojaMovil .38s var(--fluido)}
+  @keyframes subeHojaMovil{from{transform:translateY(100%)}to{transform:none}}
+}
+
+/* ---------------------------------------------------------------------
+   14. CARGA
+   --------------------------------------------------------------------- */
+.hueso{
+  background:linear-gradient(90deg,var(--lienzo-2) 25%,var(--linea) 50%,var(--lienzo-2) 75%);
+  background-size:200% 100%;animation:brilla 1.4s infinite;border-radius:var(--r-sm);
+}
+@keyframes brilla{from{background-position:200% 0}to{background-position:-200% 0}}
+.hueso-linea{height:13px;margin-bottom:.55rem}
+.hueso-bloque{height:74px;margin-bottom:.7rem;border-radius:var(--r-md)}
+
+.rueda{
+  width:18px;height:18px;border-radius:50%;flex:0 0 18px;
+  border:2.4px solid var(--linea-fuerte);border-top-color:var(--oro-hondo);
+  animation:gira .7s linear infinite;
+}
+@keyframes gira{to{transform:rotate(360deg)}}
+.cargando-centro{display:flex;flex-direction:column;align-items:center;gap:.8rem;padding:3rem 1rem;color:var(--tinta-3);font-size:.88rem}
+
+/* ---------------------------------------------------------------------
+   15. UTILIDADES
+   --------------------------------------------------------------------- */
+.t-c{text-align:center}.t-d{text-align:right}
+.t-mudo{color:var(--tinta-3)}
+.t-2{color:var(--tinta-2)}
+.t-xs{font-size:.74rem}.t-s{font-size:.82rem}.t-m{font-size:.9rem}.t-l{font-size:1.05rem}
+.t-fuerte{font-weight:640}.t-negro{font-weight:760}
+.t-mono{font-family:var(--mono);font-size:.88em;letter-spacing:-.02em}
+.t-oro{color:var(--ambar-h)}
+[data-tema="oscuro"] .t-oro{color:var(--oro)}
+.t-verde{color:var(--verde-h)}.t-rojo{color:var(--rojo-h)}.t-azul{color:var(--tinta-2)}
+.t-cortado{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.t-alto{line-height:1.7}
+.t-equilibrado{text-wrap:balance}
+.oculto{display:none !important}
+.mt0{margin-top:0}.mt8{margin-top:.5rem}.mt12{margin-top:.75rem}.mt16{margin-top:1rem}.mt24{margin-top:1.5rem}.mt32{margin-top:2rem}
+.mb8{margin-bottom:.5rem}.mb12{margin-bottom:.75rem}.mb16{margin-bottom:1rem}.mb24{margin-bottom:1.5rem}
+.linea-div{height:1px;background:var(--linea);border:none;margin:1.05rem 0}
+.nowrap{white-space:nowrap}
+
+/* Resaltado amarillo, como el del tríptico impreso */
+/* El mismo trazo de plumón del titular, para el texto corrido. */
+.resalta{
+  padding:0 .14em;font-weight:640;border-radius:.6em .45em .55em .7em / 50%;
+  background:linear-gradient(90deg,
+    rgba(212,175,55,.5), var(--oro) 10%, var(--oro) 90%, rgba(212,175,55,.5));
+  background-repeat:no-repeat;
+  background-size:100% .42em;background-position:0 84%;
+}
+
+.ficha-lista{display:grid;gap:0}
+.ficha-lista > div{display:flex;justify-content:space-between;gap:1rem;padding:.6rem 0;border-bottom:1px solid var(--linea);font-size:.88rem}
+.ficha-lista > div:last-child{border-bottom:none}
+.ficha-lista dt{color:var(--tinta-3);flex:0 0 auto}
+.ficha-lista dd{font-weight:620;text-align:right}
+
+.fila-ios{
+  display:flex;align-items:center;gap:.8rem;
+  padding:.8rem .9rem;border-radius:var(--r-md);
+  transition:background var(--rapido);border:1px solid transparent;
+}
+.fila-ios:hover{background:var(--lienzo)}
+.fila-ios .txt{flex:1;min-width:0}
+.fila-ios .txt b{display:block;font-size:.9rem;font-weight:620}
+.fila-ios .txt small{color:var(--tinta-3);font-size:.79rem}
+.fila-ios .flecha{color:var(--tinta-4);font-size:1.05rem;flex:0 0 auto}
+
+@media print{
+  .no-imprimir,.lateral,.barra-panel,#avisos,.btn,.chat-burbuja{display:none !important}
+  body{background:#fff;color:#000}
+  .tarjeta,.vidrio{box-shadow:none;border:1px solid #ccc;background:#fff}
+}

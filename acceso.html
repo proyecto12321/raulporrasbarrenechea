@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ingresar · I.E.P. Raúl Porras Barrenechea</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#EDBE33">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%231A1814'/><text x='32' y='41' font-size='21' font-weight='800' fill='%23EDBE33' text-anchor='middle' font-family='Arial'>RPB</text></svg>">
+<link rel="stylesheet" href="assets/css/nucleo.css">
+<link rel="stylesheet" href="assets/css/portal.css">
+<link rel="stylesheet" href="assets/css/componentes.css">
+</head>
+<body class="acceso">
+
+<div class="escena-acceso">
+  <div class="marco">
+    <div class="fila entre g16 barra-superior">
+      <a class="volver" href="index.html">← Volver al portal</a>
+      <button class="btn-tema" data-boton-tema onclick="U.alternarTema()" aria-label="Cambiar tema">🌙</button>
+    </div>
+  </div>
+
+  <div class="acceso-centro">
+    <div class="marco">
+      <div class="selector">
+
+        <span class="escudo escudo-xg"><span>RPB</span></span>
+        <h1>¿Cómo vas a ingresar?</h1>
+        <p>
+          El acceso de los estudiantes y el del personal están completamente separados.
+          Elige el tuyo y te llevamos a tu pantalla.
+        </p>
+
+        <div class="tarjetas-acceso">
+
+          <!-- ============ ESTUDIANTE ============ -->
+          <a class="tarjeta-acceso" href="acceso-estudiante.html">
+            <span class="loseta loseta-g l-oro">🎒</span>
+            <h3>Soy estudiante</h3>
+            <p>Entra solo con tu número de DNI. No necesitas usuario ni contraseña.</p>
+            <ul class="lista-mini">
+              <li>Tus notas y tu libreta en PDF</li>
+              <li>Tus tareas y su fecha de entrega</li>
+              <li>Los comunicados de tu grado</li>
+            </ul>
+            <span class="btn btn-oro btn-bloque">Ingresar con mi DNI <span>→</span></span>
+          </a>
+
+          <!-- ============ PERSONAL ============ -->
+          <a class="tarjeta-acceso tinta" href="acceso-personal.html">
+            <span class="loseta loseta-g l-gris">🧑‍🏫</span>
+            <h3>Soy docente o personal</h3>
+            <p>Docentes, administración, dirección y soporte técnico, con usuario y contraseña.</p>
+            <ul class="lista-mini">
+              <li>Cuaderno de notas y asistencia</li>
+              <li>Matrícula, documentos y reportes</li>
+              <li>Comunicados y mensajería interna</li>
+            </ul>
+            <span class="btn btn-oro btn-bloque">Ingresar con mi usuario <span>→</span></span>
+          </a>
+
+        </div>
+
+        <p class="acceso-pie mt24">
+          Los <b>padres y apoderados</b> no necesitan cuenta: consultan comunicados,
+          requisitos y vacantes, y envían su solicitud, directamente en el
+          <a href="index.html" class="enlace-tinta">portal público</a>.
+        </p>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="avisos"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/nucleo/semilla.js"></script>
+<script src="assets/js/nucleo/local.js"></script>
+<script src="assets/js/nucleo/config.js"></script>
+<script src="assets/js/nucleo/util.js"></script>
+<script src="assets/js/nucleo/seguridad.js"></script>
+<script src="assets/js/nucleo/datos.js"></script>
+<script src="assets/js/nucleo/sesion.js"></script>
+<script src="assets/js/nucleo/ui.js"></script>
+<script>
+  /* Si ya hay una sesión abierta, no tiene sentido elegir puerta. */
+  Sesion.redirigirSiYaEntro();
+  Datos.config.obtener('logo_url').then(U.aplicarLogo).catch(() => {});
+</script>
+</body>
+</html>

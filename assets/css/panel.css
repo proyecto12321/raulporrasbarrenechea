@@ -1,0 +1,461 @@
+/* =====================================================================
+   PANELES DE TRABAJO (dirección, docente, administrativo, estudiante, soporte)
+   I.E.P. Raúl Porras Barrenechea
+   Depende de nucleo.css.
+   ===================================================================== */
+
+body.panel{background:var(--lienzo)}
+body.panel::before{
+  content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(52rem 32rem at 6% -6%, var(--oro-tenue), transparent 60%),
+    radial-gradient(46rem 28rem at 97% 3%, rgba(11,11,12,.05), transparent 58%);
+}
+
+/* ---------------------------------------------------------------------
+   1. ESTRUCTURA
+   --------------------------------------------------------------------- */
+.armazon{display:grid;grid-template-columns:264px minmax(0,1fr);min-height:100vh}
+@media (max-width:1000px){.armazon{grid-template-columns:1fr}}
+
+/* --------------------------- Lateral --------------------------------- */
+.lateral{
+  position:sticky;top:0;height:100vh;overflow-y:auto;z-index:500;
+  display:flex;flex-direction:column;gap:.2rem;padding:1rem .75rem 1.2rem;
+  background:var(--vidrio);backdrop-filter:var(--difuso);-webkit-backdrop-filter:var(--difuso);
+  border-right:1px solid var(--linea);
+}
+.lateral::-webkit-scrollbar{width:6px}
+
+.lateral .marca-panel{display:flex;align-items:center;gap:.65rem;padding:.5rem .55rem 1.1rem}
+.lateral .marca-panel .txt b{display:block;font-size:.9rem;font-weight:680;line-height:1.2;letter-spacing:-.015em}
+.lateral .marca-panel .txt small{display:block;font-size:.7rem;color:var(--tinta-3)}
+
+.tarjeta-yo{
+  display:flex;align-items:center;gap:.7rem;padding:.7rem .75rem;margin-bottom:.9rem;
+  border-radius:var(--r-md);background:var(--vidrio-hondo);border:1px solid var(--linea);
+}
+.tarjeta-yo .txt{min-width:0;flex:1}
+.tarjeta-yo .txt b{display:block;font-size:.85rem;font-weight:640;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tarjeta-yo .txt small{display:block;font-size:.72rem;color:var(--tinta-3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+.rotulo-menu{font-size:.66rem;font-weight:750;letter-spacing:.1em;text-transform:uppercase;color:var(--tinta-3);padding:.9rem .8rem .4rem}
+
+.lateral nav{display:flex;flex-direction:column;gap:2px}
+.lateral nav a{
+  display:flex;align-items:center;gap:.7rem;
+  padding:.62rem .78rem;border-radius:var(--r-md);
+  font-size:.885rem;font-weight:560;color:var(--tinta-2);
+  transition:all var(--rapido) var(--fluido);position:relative;
+}
+.lateral nav a .ic{font-size:1rem;width:22px;text-align:center;flex:0 0 22px}
+.lateral nav a:hover{background:var(--linea);color:var(--tinta)}
+.lateral nav a.activo{
+  background:var(--oro-tenue);
+  color:var(--oro-hondo);font-weight:680;
+  box-shadow:inset 0 0 0 1px var(--linea-fuerte);
+  position:relative;
+}
+/* Una barrita dorada a la izquierda marca dónde estás, sin pintar todo. */
+.lateral nav a.activo::before{
+  content:'';position:absolute;left:0;top:18%;bottom:18%;width:3px;
+  border-radius:0 3px 3px 0;background:var(--oro);
+}
+[data-tema="oscuro"] .lateral nav a.activo{color:var(--oro)}
+.lateral nav a .cuenta{
+  margin-left:auto;min-width:20px;height:20px;padding:0 6px;border-radius:980px;
+  background:var(--rojo);color:#fff;font-size:.68rem;font-weight:700;display:grid;place-items:center;
+}
+.lateral nav a.activo .cuenta{background:rgba(26,21,0,.85);color:var(--oro)}
+
+.lateral .fondo-lateral{margin-top:auto;padding-top:1rem;display:flex;flex-direction:column;gap:.4rem}
+
+/* Lateral en móvil: cajón deslizante */
+@media (max-width:1000px){
+  .lateral{
+    position:fixed;top:0;left:0;width:272px;
+    transform:translateX(-104%);transition:transform var(--normal) var(--fluido);
+    box-shadow:var(--sombra-3);background:var(--vidrio-hondo);
+  }
+  .lateral.abierto{transform:none}
+  .capa-lateral{position:fixed;inset:0;z-index:499;background:var(--velo);backdrop-filter:blur(4px);display:none}
+  .capa-lateral.ver{display:block}
+}
+
+/* --------------------------- Barra superior --------------------------- */
+.barra-panel{
+  position:sticky;top:0;z-index:400;
+  display:flex;align-items:center;gap:.8rem;
+  height:64px;padding-inline:clamp(1rem,3vw,1.7rem);
+  background:var(--vidrio);backdrop-filter:var(--difuso);-webkit-backdrop-filter:var(--difuso);
+  border-bottom:1px solid var(--linea);
+}
+.barra-panel .titulo-vista{min-width:0;flex:1}
+.barra-panel .titulo-vista b{display:block;font-size:1.02rem;font-weight:680;letter-spacing:-.02em;line-height:1.25}
+.barra-panel .titulo-vista small{display:block;font-size:.76rem;color:var(--tinta-3)}
+.barra-panel .btn-cajon{display:none;width:38px;height:38px;border-radius:var(--r-sm);place-items:center;font-size:1.15rem;color:var(--tinta-2)}
+@media (max-width:1000px){.barra-panel .btn-cajon{display:grid}}
+
+.reloj-panel{font-variant-numeric:tabular-nums;font-size:.8rem;color:var(--tinta-3);white-space:nowrap}
+@media (max-width:700px){.reloj-panel{display:none}}
+
+/* Campana de notificaciones */
+.campana{position:relative}
+.campana .globo{
+  position:absolute;top:-2px;right:-2px;min-width:17px;height:17px;padding:0 4px;border-radius:980px;
+  background:var(--rojo);color:#fff;font-size:.64rem;font-weight:700;display:grid;place-items:center;
+  border:2px solid var(--lienzo);
+}
+.bandeja{
+  position:absolute;top:calc(100% + .6rem);right:0;width:min(340px,calc(100vw - 2rem));
+  max-height:60vh;overflow-y:auto;z-index:620;display:none;
+  background:var(--vidrio-hondo);backdrop-filter:var(--difuso);-webkit-backdrop-filter:var(--difuso);
+  border:1px solid var(--linea);border-radius:var(--r-xl);box-shadow:var(--sombra-3);padding:.5rem;
+}
+.bandeja.abierta{display:block;animation:subeHoja .3s var(--resorte)}
+.bandeja .nota-item{display:flex;gap:.7rem;padding:.75rem .8rem;border-radius:var(--r-md);transition:background var(--rapido)}
+.bandeja .nota-item:hover{background:var(--linea)}
+.bandeja .nota-item .txt b{display:block;font-size:.86rem;font-weight:620}
+.bandeja .nota-item .txt small{display:block;font-size:.77rem;color:var(--tinta-3);line-height:1.45}
+.bandeja .nota-item .cuando{font-size:.68rem;color:var(--tinta-3);margin-top:.25rem;display:block}
+
+/* --------------------------- Contenido --------------------------------- */
+.lienzo-panel{padding:clamp(1rem,2.6vw,1.7rem);max-width:1560px;width:100%}
+.vista{display:none;animation:entraVista .38s var(--fluido)}
+.vista.activa{display:block}
+@keyframes entraVista{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+.encabezado-vista{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:1.3rem}
+.encabezado-vista h2{font-size:1.42rem;letter-spacing:-.03em}
+.encabezado-vista p{color:var(--tinta-3);font-size:.87rem;margin-top:.25rem;max-width:66ch}
+.encabezado-vista .acciones{display:flex;gap:.5rem;flex-wrap:wrap}
+
+/* --------------------------- Barra de herramientas --------------------- */
+.herramientas{
+  display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;
+  padding:.85rem 1rem;margin-bottom:1rem;border-radius:var(--r-lg);
+  background:var(--vidrio);backdrop-filter:var(--difuso-suave);-webkit-backdrop-filter:var(--difuso-suave);
+  border:1px solid var(--linea);box-shadow:var(--sombra-1);
+}
+.buscador{
+  display:flex;align-items:center;gap:.55rem;flex:1;min-width:210px;
+  height:40px;padding:0 .9rem;border-radius:var(--pastilla);
+  background:var(--solido);border:1px solid var(--linea);
+  transition:border-color var(--rapido),box-shadow var(--rapido);
+}
+.buscador:focus-within{border-color:var(--oro);box-shadow:0 0 0 4px var(--oro-tenue)}
+.buscador input{flex:1;border:none;outline:none;background:none;font-size:.88rem;min-width:0}
+.buscador .limpiar{color:var(--tinta-3);font-size:.95rem;display:none}
+.buscador .limpiar.ver{display:block}
+.filtro-sel{
+  height:40px;padding:0 2rem 0 .9rem;border-radius:var(--pastilla);
+  background:var(--solido);border:1px solid var(--linea);font-size:.86rem;cursor:pointer;
+  appearance:none;-webkit-appearance:none;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' fill='none' stroke='%236B7891' stroke-width='1.8' stroke-linecap='round'/></svg>");
+  background-repeat:no-repeat;background-position:right .8rem center;background-size:11px;
+}
+.filtro-sel:focus{outline:none;border-color:var(--oro)}
+.contador-res{font-size:.79rem;color:var(--tinta-3);white-space:nowrap;font-variant-numeric:tabular-nums}
+
+/* --------------------------- Paginación -------------------------------- */
+.paginas{display:flex;align-items:center;justify-content:center;gap:.35rem;padding:1rem;flex-wrap:wrap}
+.paginas button{
+  min-width:34px;height:34px;padding:0 .6rem;border-radius:var(--r-sm);
+  font-size:.83rem;font-weight:600;color:var(--tinta-2);
+  background:var(--solido);border:1px solid var(--linea);transition:all var(--rapido);
+}
+.paginas button:hover:not(:disabled){background:var(--linea)}
+.paginas button.activa{background:var(--oro-tenue);color:var(--oro-hondo);border-color:var(--linea-fuerte);font-weight:700}
+.paginas button:disabled{opacity:.4;cursor:not-allowed}
+
+/* --------------------------- Gráficos sencillos ------------------------ */
+.grafico-barras{display:flex;align-items:flex-end;gap:.55rem;height:190px;padding:.6rem .2rem 0}
+.grafico-barras .col{flex:1;display:flex;flex-direction:column;align-items:center;gap:.45rem;min-width:0}
+.grafico-barras .tallo{
+  width:100%;max-width:44px;border-radius:9px 9px 4px 4px;
+  background:linear-gradient(180deg,var(--oro-claro),var(--oro-hondo));
+  transition:height .8s var(--fluido);position:relative;min-height:4px;
+}
+.grafico-barras .tallo.azul{background:linear-gradient(180deg,#6B6152,#3A342A)}
+.grafico-barras .tallo.verde{background:linear-gradient(180deg,var(--oro-hondo),#7A5E14)}
+.grafico-barras .tallo b{
+  position:absolute;top:-20px;left:50%;transform:translateX(-50%);
+  font-size:.74rem;font-weight:700;color:var(--tinta-2);font-variant-numeric:tabular-nums;
+}
+.grafico-barras .pie-col{font-size:.7rem;color:var(--tinta-3);text-align:center;line-height:1.25;word-break:break-word}
+
+.grafico-lineas{width:100%;height:180px;display:block}
+.leyenda{display:flex;gap:1rem;flex-wrap:wrap;margin-top:.8rem;font-size:.78rem;color:var(--tinta-3)}
+.leyenda span{display:inline-flex;align-items:center;gap:.4rem}
+.leyenda i{width:10px;height:10px;border-radius:3px;display:inline-block}
+
+/* Anillo de aforo/vacantes */
+.medidor{display:flex;align-items:center;gap:1rem}
+.medidor .cifras b{display:block;font-size:1.5rem;font-weight:700;line-height:1.1;font-variant-numeric:tabular-nums}
+.medidor .cifras small{color:var(--tinta-3);font-size:.78rem}
+
+/* --------------------------- Línea de tiempo (auditoría) --------------- */
+.linea-tiempo{position:relative;padding-left:1.5rem}
+.linea-tiempo::before{content:'';position:absolute;left:6px;top:6px;bottom:6px;width:2px;background:var(--linea);border-radius:2px}
+.linea-tiempo .hito{position:relative;padding-bottom:1.1rem}
+.linea-tiempo .hito::before{
+  content:'';position:absolute;left:-1.5rem;top:5px;width:14px;height:14px;border-radius:50%;
+  background:var(--solido);border:2.5px solid var(--oro);
+}
+.linea-tiempo .hito.verde::before{border-color:var(--verde)}
+.linea-tiempo .hito.rojo::before{border-color:var(--rojo)}
+.linea-tiempo .hito.azul::before{border-color:var(--tinta)}
+.linea-tiempo .hito b{display:block;font-size:.88rem;font-weight:620}
+.linea-tiempo .hito small{display:block;font-size:.77rem;color:var(--tinta-3)}
+
+/* --------------------------- Cuaderno de notas ------------------------- */
+.cuaderno{overflow-x:auto;-webkit-overflow-scrolling:touch;
+  border-radius:var(--r-lg);border:1px solid var(--linea);background:var(--solido);
+  /* aviso visual de que hay más columnas a la derecha */
+  background-image:linear-gradient(to left, rgba(26,24,20,.06), transparent 28px);
+  background-repeat:no-repeat;background-position:right center;background-size:28px 100%;
+}
+.cuaderno table{min-width:760px}
+table.notas-tabla{width:100%;border-collapse:collapse;font-size:.86rem;min-width:640px}
+table.notas-tabla th{
+  padding:.7rem .6rem;font-size:.72rem;text-transform:uppercase;letter-spacing:.04em;
+  color:var(--tinta-3);background:var(--lienzo);border-bottom:1px solid var(--linea);text-align:center;
+}
+table.notas-tabla th:first-child{text-align:left;position:sticky;left:0;z-index:3;background:var(--lienzo);min-width:210px}
+table.notas-tabla td{padding:.4rem .5rem;border-bottom:1px solid var(--linea);text-align:center}
+table.notas-tabla td:first-child{text-align:left;position:sticky;left:0;background:var(--solido);z-index:2;font-weight:560}
+table.notas-tabla tbody tr:hover td{background:var(--linea)}
+table.notas-tabla tbody tr:hover td:first-child{background:var(--lienzo)}
+.celda-nota{
+  width:56px;height:36px;border-radius:10px;text-align:center;font-weight:650;font-variant-numeric:tabular-nums;
+  border:1px solid var(--linea);background:var(--lienzo);outline:none;transition:all var(--rapido);
+}
+.celda-nota:focus{border-color:var(--oro);box-shadow:0 0 0 3px var(--oro-tenue);background:var(--solido)}
+.celda-nota.ad{background:rgba(52,168,83,.14);border-color:rgba(52,168,83,.38);color:var(--verde-h)}
+.celda-nota.a{background:var(--lienzo-2);border-color:var(--linea-fuerte);color:var(--tinta)}
+.celda-nota.b{background:var(--oro-tenue);border-color:rgba(212,175,55,.42);color:var(--ambar-h)}
+.celda-nota.c{background:rgba(224,53,43,.1);border-color:rgba(224,53,43,.3);color:var(--rojo-h)}
+
+/* --------------------------- Vista del estudiante ---------------------- */
+.tarjeta-curso{
+  display:flex;align-items:center;gap:.9rem;padding:1rem 1.1rem;border-radius:var(--r-lg);
+  background:var(--solido);border:1px solid var(--linea);box-shadow:var(--sombra-1);
+  transition:transform var(--normal) var(--fluido);
+}
+.tarjeta-curso:hover{transform:translateY(-3px);box-shadow:var(--sombra-2)}
+.tarjeta-curso .nota-grande{
+  width:56px;height:56px;flex:0 0 56px;border-radius:18px;display:grid;place-items:center;
+  font-size:1.32rem;font-weight:750;font-variant-numeric:tabular-nums;
+}
+.n-ad{background:rgba(52,168,83,.16);color:var(--verde-h)}
+.n-a{background:linear-gradient(160deg,var(--oro-claro),var(--oro));color:var(--oro-tinta)}
+.n-b{background:var(--oro);color:var(--oro-tinta)}
+.n-c{background:rgba(224,53,43,.12);color:var(--rojo-h)}
+.n-sin{background:var(--linea);color:var(--tinta-3)}
+
+.tarea-item{
+  display:flex;gap:.9rem;padding:1rem 1.1rem;border-radius:var(--r-lg);
+  background:var(--solido);border:1px solid var(--linea);border-left:3px solid var(--tinta);
+  box-shadow:var(--sombra-1);
+}
+.tarea-item.vencida{border-left-color:var(--rojo)}
+.tarea-item.entregada{border-left-color:var(--verde)}
+.tarea-item .txt{flex:1;min-width:0}
+.tarea-item .txt b{display:block;font-size:.94rem;font-weight:640;margin-bottom:.2rem}
+.tarea-item .txt p{font-size:.83rem;color:var(--tinta-2);line-height:1.5}
+.tarea-item .txt .meta{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.55rem;font-size:.74rem;color:var(--tinta-3)}
+
+/* --------------------------- Soporte: tickets -------------------------- */
+.ticket{
+  display:flex;gap:.9rem;padding:1rem 1.1rem;border-radius:var(--r-lg);
+  background:var(--solido);border:1px solid var(--linea);box-shadow:var(--sombra-1);
+  transition:transform var(--rapido) var(--fluido);
+}
+.ticket:hover{transform:translateY(-2px)}
+.ticket.p-alta{border-left:3px solid var(--rojo)}
+.ticket.p-media{border-left:3px solid var(--oro)}
+.ticket.p-baja{border-left:3px solid var(--verde)}
+.ticket .txt{flex:1;min-width:0}
+.ticket .txt b{display:block;font-size:.93rem;font-weight:640}
+.ticket .txt p{font-size:.83rem;color:var(--tinta-2);line-height:1.5;margin-top:.25rem}
+.ticket .txt .meta{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.6rem;align-items:center}
+
+/* Semáforo de estado del sistema */
+.pulso{
+  display:flex;align-items:center;gap:.8rem;padding:.9rem 1rem;border-radius:var(--r-md);
+  background:var(--solido);border:1px solid var(--linea);
+}
+.pulso .txt{flex:1}
+.pulso .txt b{display:block;font-size:.88rem;font-weight:620}
+.pulso .txt small{color:var(--tinta-3);font-size:.77rem}
+
+/* --------------------------- Zona de arrastre (importar) --------------- */
+.soltar{
+  border:2px dashed var(--linea-fuerte);border-radius:var(--r-xl);
+  padding:2.2rem 1.4rem;text-align:center;color:var(--tinta-3);
+  transition:all var(--rapido);cursor:pointer;background:var(--lienzo);
+}
+.soltar:hover,.soltar.encima{border-color:var(--oro);background:var(--oro-tenue);color:var(--tinta-2)}
+.soltar .icono{font-size:2.2rem;margin-bottom:.5rem;opacity:.6}
+
+/* --------------------------- Vista previa de reporte ------------------- */
+.hoja-reporte{
+  background:#fff;color:#111;border-radius:var(--r-md);padding:2rem;
+  box-shadow:var(--sombra-2);max-width:760px;margin:0 auto;font-size:.86rem;line-height:1.7;
+}
+.hoja-reporte h4{text-align:center;font-size:1.05rem;margin-bottom:.3rem;color:#1A1814}
+.hoja-reporte .membrete{text-align:center;border-bottom:2px solid #1A1814;padding-bottom:.8rem;margin-bottom:1.2rem}
+.hoja-reporte table{width:100%;border-collapse:collapse;font-size:.8rem;margin-top:.8rem}
+.hoja-reporte th,.hoja-reporte td{border:1px solid #d5dae3;padding:.4rem .55rem;text-align:left}
+.hoja-reporte th{background:#eef1f6}
+
+/* ---------------------------------------------------------------------
+   Rango de fechas en la barra de herramientas
+   --------------------------------------------------------------------- */
+.rango-fechas{
+  display:inline-flex;align-items:center;gap:.35rem;
+  padding:.32rem .5rem;border-radius:var(--pastilla);
+  background:var(--lienzo-2);border:1px solid var(--linea);
+  font-size:.8rem;color:var(--tinta-2);
+}
+.rango-fechas input[type="date"]{
+  border:none;background:transparent;color:var(--tinta);
+  font:inherit;font-size:.8rem;padding:.1rem .15rem;outline:none;
+  min-width:6.4rem;max-width:8.4rem;
+}
+.rango-fechas input[type="date"]:focus{color:var(--tinta);text-decoration:underline}
+.rango-fechas .guion{color:var(--tinta-3)}
+.rango-fechas .limpiar{
+  opacity:0;pointer-events:none;transition:opacity var(--rapido);
+  width:18px;height:18px;border-radius:50%;display:grid;place-items:center;
+  background:var(--linea);color:var(--tinta-2);font-size:.62rem;
+}
+.rango-fechas .limpiar.ver{opacity:1;pointer-events:auto}
+@media (max-width:720px){ .rango-fechas{width:100%;justify-content:space-between} }
+
+/* Recuadro del texto que se va a difundir */
+.aviso-caja{
+  padding:.95rem 1.05rem;border-radius:var(--r-lg);
+  background:var(--oro-tenue);border-left:3px solid var(--oro);
+}
+.aviso-caja b{font-size:1rem}
+
+/* ---------------------------------------------------------------------
+   APARIENCIA — vista de Soporte: insignia y fotos de las instalaciones
+   --------------------------------------------------------------------- */
+.marco-foto{
+  aspect-ratio:4/3;border-radius:var(--r-lg);overflow:hidden;
+  background:linear-gradient(155deg,#FFFDF7,var(--oro-suave));
+  border:1px solid var(--linea-fuerte);
+  display:grid;place-items:center;
+}
+[data-tema="oscuro"] .marco-foto{background:linear-gradient(155deg,#241F14,#141109)}
+.marco-foto img{width:100%;height:100%;object-fit:cover;display:block}
+.sin-foto{display:flex;flex-direction:column;align-items:center;gap:.35rem;color:var(--tinta-3)}
+.sin-foto span{font-size:2rem;line-height:1;filter:grayscale(.25)}
+.sin-foto small{font-size:.74rem}
+
+/* ---------------------------------------------------------------------
+   MÓDULOS CON SECCIONES (pestañas internas)
+   ---------------------------------------------------------------------
+   El menú lateral quedó en seis módulos; dentro de cada uno, estas
+   pestañas separan las secciones sin volver a llenar el menú.
+   --------------------------------------------------------------------- */
+.pestanas-modulo{
+  display:flex;gap:.25rem;flex-wrap:wrap;
+  padding:.3rem;margin-bottom:1.3rem;
+  background:var(--lienzo-2);
+  border:1px solid var(--linea);
+  border-radius:var(--pastilla);
+  width:fit-content;max-width:100%;
+}
+.pestanas-modulo .pestana{
+  display:inline-flex;align-items:center;gap:.4rem;
+  padding:.55rem 1.05rem;border-radius:var(--pastilla);
+  font-size:.875rem;font-weight:620;color:var(--tinta-2);white-space:nowrap;
+  transition:background var(--rapido) var(--fluido), color var(--rapido), box-shadow var(--rapido);
+}
+.pestanas-modulo .pestana .ic{font-size:.95rem;opacity:.85}
+.pestanas-modulo .pestana:hover{color:var(--tinta);background:var(--solido)}
+.pestanas-modulo .pestana.activa{
+  background:var(--solido);
+  color:var(--oro-hondo);
+  box-shadow:var(--sombra-1);
+  border:1px solid var(--linea-fuerte);
+}
+[data-tema="oscuro"] .pestanas-modulo .pestana.activa{background:var(--oro-suave);color:var(--oro)}
+.pestanas-modulo .pestana:focus-visible{outline:2.5px solid var(--oro-hondo);outline-offset:2px}
+@media (max-width:640px){
+  .pestanas-modulo{width:100%;overflow-x:auto;flex-wrap:nowrap;justify-content:flex-start;
+    scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .pestanas-modulo::-webkit-scrollbar{display:none}
+  .pestanas-modulo .pestana{padding:.5rem .85rem;font-size:.82rem}
+}
+
+/* Clasificación de Dirección: niveles → grados → secciones */
+.grupo-clas{margin-bottom:1.6rem}
+.titulo-grupo{
+  display:flex;align-items:baseline;gap:.6rem;
+  font-size:1.05rem;font-weight:700;margin-bottom:.7rem;
+  padding-bottom:.5rem;border-bottom:1px solid var(--linea-fuerte);
+}
+.acordeon-clas{
+  background:var(--solido);border:1px solid var(--linea);
+  border-radius:var(--r-lg);margin-bottom:.6rem;overflow:hidden;
+}
+.acordeon-clas > summary{
+  display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;
+  padding:.85rem 1rem;cursor:pointer;list-style:none;
+  transition:background var(--rapido);
+}
+.acordeon-clas > summary::-webkit-details-marker{display:none}
+.acordeon-clas > summary::before{content:'▸';color:var(--oro-hondo);font-size:.9rem;transition:transform var(--rapido)}
+.acordeon-clas[open] > summary::before{transform:rotate(90deg)}
+.acordeon-clas > summary:hover{background:var(--lienzo-2)}
+.acordeon-clas > summary b{font-size:.94rem}
+.seccion-clas{padding:.2rem 1rem 1rem;border-top:1px solid var(--linea)}
+
+/* ---------------------------------------------------------------------
+   BUSCADOR CON SUGERENCIAS (constancias)
+   --------------------------------------------------------------------- */
+.buscador-sugerido{position:relative;max-width:560px}
+.buscador-sugerido .buscador{width:100%}
+.sugerencias{
+  position:absolute;top:calc(100% + .4rem);left:0;right:0;z-index:40;
+  background:var(--solido);border:1px solid var(--linea-fuerte);
+  border-radius:var(--r-lg);box-shadow:var(--sombra-3);
+  overflow:hidden;max-height:340px;overflow-y:auto;
+}
+.sugerencia{
+  display:flex;align-items:center;gap:.7rem;width:100%;text-align:left;
+  padding:.65rem .85rem;background:none;border:none;
+  border-bottom:1px solid var(--linea);
+  transition:background var(--rapido);
+}
+.sugerencia:last-child{border-bottom:none}
+.sugerencia:hover,.sugerencia.marcada{background:var(--oro-tenue)}
+.sugerencia .txt{flex:1;min-width:0}
+.sugerencia .txt b{display:block;font-size:.9rem;font-weight:640}
+.sugerencia .txt small{display:block;font-size:.75rem;color:var(--tinta-3)}
+.sugerencia.vacia{color:var(--tinta-3);font-size:.86rem;cursor:default;display:block}
+
+/* Tarjeta elegida (tipo de documento) */
+.tarjeta-viva.elegida{
+  border-color:var(--oro);
+  box-shadow:var(--sombra-2), var(--brillo-oro);
+}
+
+/* Globo de "sin leer" en la bandeja de mensajes */
+.globo-msj{
+  display:inline-grid;place-items:center;min-width:18px;height:18px;padding:0 5px;
+  margin-left:.35rem;border-radius:980px;
+  background:var(--rojo);color:#fff;font-size:.66rem;font-weight:800;
+}
+
+/* Vista previa del sello y la firma de la dirección */
+.marco-firma{
+  width:190px;height:96px;flex:0 0 auto;
+  border:1px dashed var(--linea-fuerte);border-radius:var(--r-md);
+  background:var(--solido);display:grid;place-items:center;overflow:hidden;padding:.35rem;
+}
+.marco-firma img{max-width:100%;max-height:100%;object-fit:contain}

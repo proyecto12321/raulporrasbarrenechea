@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Matrícula 2026 · I.E.P. Raúl Porras Barrenechea</title>
+<meta name="description" content="Matrícula 2026 en la I.E.P. Raúl Porras Barrenechea, Sunampe, Chincha: requisitos, costos, vacantes por aula, solicitud en línea y entrevista con la directora.">
+<meta name="theme-color" content="#EDBE33">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%231A1814'/><text x='32' y='41' font-size='21' font-weight='800' fill='%23EDBE33' text-anchor='middle' font-family='Arial'>RPB</text></svg>">
+<link rel="stylesheet" href="assets/css/nucleo.css">
+<link rel="stylesheet" href="assets/css/portal.css">
+<link rel="stylesheet" href="assets/css/componentes.css">
+</head>
+<body class="portal" data-pagina="matricula">
+
+<!-- ===================== BARRA SUPERIOR ===================== -->
+<header class="barra-flota" id="barraFlota">
+  <div class="marco">
+    <div class="cascara rel">
+      <a class="marca" href="index.html">
+        <span class="escudo"><span>RPB</span></span>
+        <span class="txt">
+          <b>I.E.P. Raúl Porras Barrenechea</b>
+          <small>Jardín · Primaria — Sunampe, Chincha</small>
+        </span>
+      </a>
+
+      <nav class="menu" id="menuPrincipal">
+        <a href="index.html"><span class="ic">🏠</span>Inicio</a>
+        <a href="comunicados.html"><span class="ic">📣</span>Comunicados</a>
+        <a href="matricula.html" class="activo"><span class="ic">📝</span>Matrícula</a>
+      </nav>
+
+      <div class="barra-acciones">
+        <button class="btn-tema" data-boton-tema onclick="U.alternarTema()" aria-label="Cambiar tema">🌙</button>
+        <a class="btn btn-oro" href="acceso.html"><span>👤</span> <span class="rotulo-ingresar">Ingresar</span></a>
+        <button class="btn-menu" id="btnMenuMovil" aria-label="Menú">☰</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ===================== CABECERA ===================== -->
+  <section class="marco cabecera-pagina">
+    <span class="ojal">Admisión <span data-anio></span></span>
+    <h1>Matrícula <em>abierta</em></h1>
+    <p>Aquí están los requisitos, los costos y los cupos que quedan hoy en cada aula.
+       Puedes enviar tu solicitud o pedir una entrevista con la directora, y el
+       asistente resuelve las dudas al momento.</p>
+    <div class="portada-botones mt16">
+      <a class="btn btn-oro btn-g" href="#solicitud">Solicitar una vacante <span>→</span></a>
+      <a class="btn btn-claro btn-g" href="#entrevista">Pedir una entrevista</a>
+    </div>
+  </section>
+
+  <!-- ===================== VACANTES ===================== -->
+  <section class="seccion marco" id="vacantes">
+    <div class="seccion-cabeza">
+      <span class="ojal">Cupos de hoy</span>
+      <h2>Vacantes por aula</h2>
+      <p>Cada ambiente recibe como máximo 12 estudiantes. Esta tabla sale de la
+         base de datos: si se matricula alguien, el número baja al instante.</p>
+    </div>
+    <div class="rejilla rejilla-4" id="listaVacantes">
+      <div class="hueso hueso-bloque hueso-120"></div>
+      <div class="hueso hueso-bloque hueso-120"></div>
+      <div class="hueso hueso-bloque hueso-120"></div>
+      <div class="hueso hueso-bloque hueso-120"></div>
+    </div>
+  </section>
+
+  <!-- ===================== ASISTENTE ===================== -->
+  <section class="seccion marco" id="asistente">
+    <div class="asistente">
+      <div>
+        <span class="ojal">Atención inmediata</span>
+        <h2>Pregúntale al asistente</h2>
+        <p class="t-2 t-alto mt12 ancho-lectura">
+          No es un formulario ni un menú de opciones: lee lo que escribes,
+          consulta la base de datos del colegio y contesta con las cifras del día.
+          Si no sabe algo, te abre un ticket para el área que sí.
+        </p>
+        <ul class="lista-visto mt16" id="ventajasChat"></ul>
+        <div class="portada-botones mt24">
+          <button class="btn btn-marino btn-g" id="btnAbrirChat">Abrir el asistente</button>
+          <a class="btn btn-claro btn-g" id="btnLlamar" href="#">📞 Llamar al colegio</a>
+        </div>
+      </div>
+
+      <div class="marco-movil">
+        <div class="marco-movil-top"><span></span></div>
+        <div class="pantalla">
+        <div class="chat-empotrado">
+          <header class="chat-cabeza">
+            <span class="loseta loseta-s l-oro">🤖</span>
+            <div class="crece">
+              <b>Asistente RPB</b>
+              <small><span class="punto punto-vivo"></span> En línea · responde al instante</small>
+            </div>
+          </header>
+          <div class="chat-cuerpo" id="chatCuerpo"></div>
+          <div class="chat-sugerencias" id="chatSugerencias"></div>
+          <form class="chat-pie" id="chatForm">
+            <input id="chatTexto" placeholder="Escribe tu pregunta…" autocomplete="off" maxlength="200">
+            <button type="submit" aria-label="Enviar">➤</button>
+          </form>
+        </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== REQUISITOS Y COSTOS ===================== -->
+  <section class="seccion marco" id="requisitos">
+    <div class="seccion-cabeza">
+      <span class="ojal">Antes de venir</span>
+      <h2>Requisitos y costos</h2>
+      <p>Lo mismo que dice el tríptico, para que no tengas que buscarlo.</p>
+    </div>
+    <div class="rejilla-par">
+      <div class="tarjeta">
+        <div class="cabeza"><div><h3>📋 Requisitos de matrícula</h3><p>Trae los documentos en original y copia</p></div></div>
+        <div id="listaRequisitos"></div>
+      </div>
+      <div class="tarjeta">
+        <div class="cabeza"><div><h3>💰 Costos <span data-anio></span></h3><p>Sin cobros sorpresa</p></div></div>
+        <div class="caja-precios" id="listaPrecios"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SOLICITUDES ===================== -->
+  <section class="seccion marco" id="solicitud">
+    <div class="seccion-cabeza centrada">
+      <span class="ojal">Da el primer paso</span>
+      <h2>Escríbenos</h2>
+      <p>Elige lo que necesitas. Las dos llegan a la oficina el mismo día.</p>
+    </div>
+
+    <div class="pestanas-tramite" role="tablist">
+      <button class="tramite activo" data-tramite="vacante" role="tab">🎒 Solicitar vacante</button>
+      <button class="tramite" data-tramite="entrevista" role="tab">🗓️ Entrevista con la directora</button>
+    </div>
+
+    <div class="tarjeta caja-tramite" id="panelVacante">
+      <div class="banda banda-info mb16">
+        <span class="ic">ℹ️</span>
+        <div>Este formulario <b>no crea una cuenta</b> ni matricula automáticamente:
+        envía tu pedido a la oficina administrativa, que lo revisa y te llama.</div>
+      </div>
+      <form id="formSolicitud" novalidate>
+        <div id="camposSolicitud"></div>
+        <div class="banda banda-mal oculto mb16" id="errorSolicitud"></div>
+        <button class="btn btn-oro btn-xg" type="submit" id="btnSolicitud">Enviar solicitud</button>
+        <p class="t-xs t-mudo t-c mt12 t-alto-2">
+          Al enviar aceptas que la institución use estos datos únicamente para el proceso de admisión.
+        </p>
+      </form>
+    </div>
+
+    <div class="tarjeta caja-tramite oculto" id="panelEntrevista">
+      <div class="banda banda-ojo mb16">
+        <span class="ic">🗓️</span>
+        <div>La directora <b id="nombreDirectora"></b> atiende en horario de oficina.
+        Deja tus datos y el motivo, y desde secretaría te confirman día y hora.</div>
+      </div>
+      <form id="formEntrevista" novalidate>
+        <div id="camposEntrevista"></div>
+        <div class="banda banda-mal oculto mb16" id="errorEntrevista"></div>
+        <button class="btn btn-marino btn-xg" type="submit" id="btnEntrevista">Pedir la entrevista</button>
+        <p class="t-xs t-mudo t-c mt12 t-alto-2">
+          Recibirás la confirmación por el celular que dejes aquí.
+        </p>
+      </form>
+    </div>
+  </section>
+
+  <!-- ===================== PIE ===================== -->
+  <footer class="pie marco">
+    <div class="cols">
+      <div>
+        <div class="fila g12 mb12">
+          <span class="escudo"><span>RPB</span></span>
+          <div>
+            <b class="pie-marca">I.E.P. Raúl Porras Barrenechea</b>
+            <small class="t-mudo">Sunampe · Chincha · Ica</small>
+          </div>
+        </div>
+        <p id="piePromesa"></p>
+      </div>
+      <div>
+        <h5>Institución</h5>
+        <ul>
+          <li><a href="index.html#historia">Historia del colegio</a></li>
+          <li><a href="index.html#lugares">Instalaciones</a></li>
+          <li><a href="index.html#aulas">Nuestras aulas</a></li>
+          <li><a href="index.html#triptico">Tríptico informativo</a></li>
+          <li><a href="comunicados.html#calendario">Calendario académico</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Trámites</h5>
+        <ul>
+          <li><a href="matricula.html#solicitud">Solicitud de vacante</a></li>
+          <li><a href="matricula.html#entrevista">Entrevista con la directora</a></li>
+          <li><a href="matricula.html#requisitos">Requisitos y costos</a></li>
+          <li><a href="matricula.html#asistente">Asistente virtual</a></li>
+          <li><a href="comunicados.html">Comunicados</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Sistema</h5>
+        <ul>
+          <li><a href="acceso-estudiante.html">Ingreso de estudiantes</a></li>
+          <li><a href="acceso-personal.html">Ingreso del personal</a></li>
+          <li><a href="#" id="enlaceSoporte">Soporte técnico</a></li>
+        </ul>
+        <h5 class="h5-suelto">Contacto</h5>
+        <ul id="pieContacto"></ul>
+      </div>
+    </div>
+    <div class="abajo">
+      <span id="pieAbajo"></span>
+      <span class="hashtag">#JuntosCambiaremosLaHistoria</span>
+    </div>
+  </footer>
+
+</main>
+<!-- ===================== CHATBOT FLOTANTE ===================== -->
+<button class="chat-burbuja" id="chatBurbuja" aria-label="Abrir asistente">💬<span class="globo" id="chatGlobo">1</span></button>
+<section class="chat-ventana" id="chatVentana" aria-label="Asistente virtual">
+  <header class="chat-cabeza">
+    <span class="loseta loseta-s l-oro">🤖</span>
+    <div class="crece">
+      <b>Asistente RPB</b>
+      <small><span class="punto punto-vivo"></span> En línea</small>
+    </div>
+    <button class="btn-ico" id="chatCerrar" aria-label="Cerrar"
+      class="btn-cerrar-claro">✕</button>
+  </header>
+  <div class="chat-cuerpo" id="chatCuerpoFlotante"></div>
+  <div class="chat-sugerencias" id="chatSugerenciasFlotante"></div>
+  <form class="chat-pie" id="chatFormFlotante">
+    <input id="chatTextoFlotante" placeholder="Escribe tu pregunta…" autocomplete="off" maxlength="200">
+    <button type="submit" aria-label="Enviar">➤</button>
+  </form>
+</section>
+
+<!-- ===================== VISOR DE IMAGEN ===================== -->
+<div class="visor" id="visor">
+  <button class="cerrar-visor" id="cerrarVisor" aria-label="Cerrar">✕</button>
+  <img id="visorImg" src="" alt="">
+</div>
+
+<div id="avisos"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/nucleo/semilla.js"></script>
+<script src="assets/js/nucleo/local.js"></script>
+<script src="assets/js/nucleo/config.js"></script>
+<script src="assets/js/nucleo/util.js"></script>
+<script src="assets/js/nucleo/seguridad.js"></script>
+<script src="assets/js/nucleo/datos.js"></script>
+<script src="assets/js/nucleo/sesion.js"></script>
+<script src="assets/js/nucleo/ui.js"></script>
+<script src="assets/js/modulos/chatbot.js"></script>
+<script src="assets/js/portal.js"></script>
+</body>
+</html>

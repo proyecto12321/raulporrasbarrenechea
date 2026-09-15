@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ingreso de estudiantes · I.E.P. Raúl Porras Barrenechea</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#EDBE33">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%23EDBE33'/><text x='32' y='41' font-size='21' font-weight='800' fill='%231A1814' text-anchor='middle' font-family='Arial'>RPB</text></svg>">
+<link rel="stylesheet" href="assets/css/nucleo.css">
+<link rel="stylesheet" href="assets/css/portal.css">
+<link rel="stylesheet" href="assets/css/componentes.css">
+</head>
+<body class="acceso">
+
+<div class="escena-acceso">
+  <div class="marco">
+    <div class="fila entre g16 barra-superior">
+      <a class="volver" href="acceso.html">← Elegir otra puerta</a>
+      <button class="btn-tema" data-boton-tema onclick="U.alternarTema()" aria-label="Cambiar tema">🌙</button>
+    </div>
+  </div>
+
+  <div class="acceso-centro">
+    <div class="caja-acceso">
+
+      <div class="cumbre">
+        <span class="escudo escudo-g"><span>RPB</span></span>
+        <h1>Hola 👋</h1>
+        <p>Escribe tu número de DNI para entrar a tu espacio</p>
+        <span class="marca-rol estudiante">🎒 Acceso de estudiantes</span>
+      </div>
+
+      <div class="bloqueo" id="avisoBloqueo">
+        <span>🔒</span><span id="textoBloqueo"></span>
+      </div>
+
+      <div class="banda banda-info oculto mb16" id="avisoMotivo">
+        <span class="ic">ℹ️</span><div id="textoMotivo"></div>
+      </div>
+
+      <form id="formEstudiante" novalidate>
+        <div class="campo">
+          <label for="dniAlumno">Tu número de DNI</label>
+          <div class="caja caja-ios pin" id="caja_dniAlumno">
+            <span class="ic">🪪</span>
+            <input id="dniAlumno" inputmode="numeric" autocomplete="off" maxlength="8"
+                   placeholder="00000000" aria-describedby="pista_dniAlumno" autofocus>
+          </div>
+          <span class="pista" id="pista_dniAlumno"></span>
+        </div>
+
+        <button class="btn btn-oro btn-xg mt8" type="submit" id="btnEstudiante">
+          Ingresar <span>→</span>
+        </button>
+      </form>
+
+      <p class="nota-acceso">
+        Tu DNI debe estar matriculado en la institución.<br>
+        ¿No te deja entrar? <a href="#" id="ayudaEstudiante">Avísale a soporte</a>
+      </p>
+
+      <div class="otra-puerta">
+        <span>¿Eres docente o personal?</span>
+        <a href="acceso-personal.html">Entra por aquí →</a>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="marco">
+    <p class="acceso-pie">
+      Todos los accesos quedan registrados en la bitácora de auditoría del sistema.
+    </p>
+  </div>
+</div>
+
+<!-- Asistente, para abrir un ticket sin tener cuenta -->
+<button class="chat-burbuja" id="chatBurbuja" aria-label="Abrir asistente">💬</button>
+<section class="chat-ventana" id="chatVentana" aria-label="Asistente virtual">
+  <header class="chat-cabeza">
+    <span class="loseta loseta-s l-oro">🤖</span>
+    <div class="crece">
+      <b>Asistente RPB</b>
+      <small><span class="punto punto-vivo"></span> En línea</small>
+    </div>
+    <button class="btn-ico" id="chatCerrar" aria-label="Cerrar"
+      class="btn-cerrar-claro">✕</button>
+  </header>
+  <div class="chat-cuerpo" id="chatCuerpoFlotante"></div>
+  <div class="chat-sugerencias" id="chatSugerenciasFlotante"></div>
+  <form class="chat-pie" id="chatFormFlotante">
+    <input id="chatTextoFlotante" placeholder="Escribe tu pregunta…" autocomplete="off" maxlength="200">
+    <button type="submit" aria-label="Enviar">➤</button>
+  </form>
+</section>
+
+<div id="avisos"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/nucleo/semilla.js"></script>
+<script src="assets/js/nucleo/local.js"></script>
+<script src="assets/js/nucleo/config.js"></script>
+<script src="assets/js/nucleo/util.js"></script>
+<script src="assets/js/nucleo/seguridad.js"></script>
+<script src="assets/js/nucleo/datos.js"></script>
+<script src="assets/js/nucleo/sesion.js"></script>
+<script src="assets/js/nucleo/ui.js"></script>
+<script src="assets/js/modulos/chatbot.js"></script>
+<script src="assets/js/acceso-comun.js"></script>
+<script src="assets/js/acceso-estudiante.js"></script>
+</body>
+</html>
